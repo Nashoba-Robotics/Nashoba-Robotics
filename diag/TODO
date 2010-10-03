@@ -1,0 +1,8 @@
+
+1. Implement observable subclass for each wpilib sensor and output.
+
+2. Profile footprint and determine if we need to cut back - this should be a
+   very low-footprint area.
+
+3. Change web interface to allow setting of values and put each element in a
+   <div> of it's own.
