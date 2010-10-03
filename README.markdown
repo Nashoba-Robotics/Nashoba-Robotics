@@ -31,5 +31,14 @@ the need to wrap it in an intermediary (or rather, it gets wrapped in an
 intermediary implicitly). Since this can be fairly confusing, an example
 follows:
 
-<script src="http://gist.github.com/608688.js"> </script>
+[gist id=608688]
+#include "WPILib.h"
+#include "nr/diag/diagnostics_center.h"
+#include "nr/diag/observable_wpi.h"
 
+Jaguar motorA( 1 );
+nr::diag::diagnostics_center& diagnostics =
+        nr::diag::diagnostics_center::get_shared_instance();
+
+diagnostics.register_device( motorA );
+[/gist]
