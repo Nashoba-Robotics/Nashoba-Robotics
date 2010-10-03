@@ -22,16 +22,12 @@ namespace nr {
 			observable_jaguar( const Jaguar& ) throw ();
 
 			const std::string value() const throw ();
-			const std::string identifier() const throw ();
-
-			void set_identifier( const std::string &str ) throw () { ident = str; }
 
 			bool setable() const throw () { return true; }
 			void set( float value ) throw () { device.Set( value ); }
 
 		private:
 			Jaguar device;
-			std::string ident;
 		};
 	}
 }

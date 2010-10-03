@@ -17,12 +17,37 @@
 namespace nr{
 	namespace diag
 	{
+		class observable;
+		
+		/**
+		 *	A singleton class representing a diagnostics center and server. Individual
+		 *	inputs and outputs register themselves with the diagnostics center by using
+		 *	the `register_device' method. Devices must provide a unique identifier when
+		 *	registering themselves, which is sent back to the console.
+		 *
+		 *	Any device that wishes to register itself should either be a subclass of
+		 *	the `observable' class or should implement a wrapper class that descends
+		 *	from `observable'. Wrappers for common WPILib classes are available in the
+		 *	observable_wpi.h header.
+		 */
 		class diagnostics_center : private nr::conc::thread::entry
 		{
 		public:
-			void register_device( observable &device ) throw ();
-			void register_device( observable *device ) throw ();
-
+			/**
+			 *	Registers a given device and unique identifier pair with the diagnostics
+			 *	center. See the class description for more detail.
+			 */
+			void register_device( observable &device, const std::string &identifier ) throw ();
+			
+			/**
+			 *	Registers a given device and unique identifier pair with the diagnostics
+			 *	center. See the class description for more detail.
+			 */
+			void register_device( observable *device, const std::string &identifier ) throw ();
+			
+			/**
+			 *	Gets the shared diagnostics center instance
+			 */
 			static diagnostics_center& get_shared_instance() throw ();
 
 		private:

@@ -25,9 +25,4 @@ const std::string observable_jaguar::value() const
 	return std::string( out );
 }
 
-const std::string observable_jaguar::identifier() const
-{
-	return "";
-}
-
 #endif

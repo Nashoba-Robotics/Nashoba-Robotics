@@ -7,7 +7,6 @@
  */
 
 #include "diagnostics_center.h"
-#include "../conc/thread_exception.h"
 #include <iostream>
 #include <sstream>
 #include <ctime>
@@ -53,20 +52,22 @@ diagnostics_center::~diagnostics_center() throw ()
 {
 }
 
-void diagnostics_center::register_device( observable &device ) throw ()
+void diagnostics_center::register_device( observable &device, const std::string &identifier ) throw ()
 {
-	register_device( &device );
+	register_device( &device, identifier );
 }
 
-void diagnostics_center::register_device( observable *device ) throw ()
+void diagnostics_center::register_device( observable *device, const std::string &identifier ) throw ()
 {
-	if ( device == NULL )
+	if ( device == NULL || identifier.empty() )
 		return;
+	
+	device->identifier = identifier;
 
 	std::vector<observable*>::iterator it;
 	for ( it = devices.begin(); it != devices.end(); it++ )
 	{
-		if ( device == *it )
+		if ( device->identifier == (*it)->identifier )
 			return;
 	}
 
@@ -130,7 +131,7 @@ void diagnostics_center::handle_client( nr::net::socket &client )
 				ss << now;
 				ss << ',';
 				ss << '"';
-				ss << (*it)->identifier();
+				ss << (*it)->identifier;
 				ss << "\",";
 				ss << (*it)->value();
 				ss << ',';
