@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include <vector>
 #include "../conc/thread.h"
 #include "../conc/mutex.h"
 #include "../net/socket.h"
 #include "observable.h"
-#include <vector>
 
 namespace nr{
 	namespace diag
