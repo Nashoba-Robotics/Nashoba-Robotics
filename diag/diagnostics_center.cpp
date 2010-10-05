@@ -54,25 +54,38 @@ diagnostics_center::~diagnostics_center() throw ()
 
 void diagnostics_center::register_device( observable &device, const std::string &identifier ) throw ()
 {
-	register_device( &device, identifier );
-}
-
-void diagnostics_center::register_device( observable *device, const std::string &identifier ) throw ()
-{
-	if ( device == NULL || identifier.empty() )
+	if ( identifier.empty() )
 		return;
 	
-	device->identifier = identifier;
-
-	std::vector<observable*>::iterator it;
+	device.identifier = identifier;
+	
+	std::vector<observable>::iterator it;
 	for ( it = devices.begin(); it != devices.end(); it++ )
 	{
-		if ( device->identifier == (*it)->identifier )
+		if ( device.identifier == it->identifier )
 			return;
 	}
-
+	
 	SYNCHRONIZED(devices_mutex) {
 		devices.push_back( device );
+	}
+}
+
+void diagnostics_center::unregister_device( const std::string &identifier ) throw ()
+{
+	if ( identifier.empty() )
+		return;
+	
+	std::vector<observable>::iterator it;
+	for ( it = devices.begin(); it != devices.end(); it++ )
+	{
+		if ( identifier == it->identifier )
+		{
+			SYNCHRONIZED(devices_mutex) {
+				devices.erase(it);
+			}
+			return;
+		}
 	}
 }
 
@@ -125,17 +138,17 @@ void diagnostics_center::handle_client( nr::net::socket &client )
 			time_t now = time( NULL );
 
 			// Generate the devices list and write it to the socket
-			std::vector<observable*>::iterator it;
+			std::vector<observable>::iterator it;
 			for ( it = devices.begin(); it != devices.end(); it++ )
 			{
 				ss << now;
 				ss << ',';
 				ss << '"';
-				ss << (*it)->identifier;
+				ss << it->identifier;
 				ss << "\",";
-				ss << (*it)->value();
+				ss << it->value();
 				ss << ',';
-				ss << ((*it)->setable() ? "YES" : "NO");
+				ss << (it->setable() ? "YES" : "NO");
 				ss << '\n';
 			}
 

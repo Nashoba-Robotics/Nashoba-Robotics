@@ -40,10 +40,9 @@ namespace nr{
 			void register_device( observable &device, const std::string &identifier ) throw ();
 			
 			/**
-			 *	Registers a given device and unique identifier pair with the diagnostics
-			 *	center. See the class description for more detail.
+			 *	Unregisters the device with the given identifier from the server
 			 */
-			void register_device( observable *device, const std::string &identifier ) throw ();
+			void unregister_device( const std::string &identifier ) throw ();
 			
 			/**
 			 *	Gets the shared diagnostics center instance
@@ -51,7 +50,7 @@ namespace nr{
 			static diagnostics_center& get_shared_instance() throw ();
 
 		private:
-			std::vector<observable*> devices;
+			std::vector<observable> devices;
 			nr::conc::mutex devices_mutex;
 
 			// Threading Stuff
