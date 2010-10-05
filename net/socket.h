@@ -6,6 +6,8 @@
  *	All Rights Reserved
  */
 
+#pragma once
+
 #include <typeinfo>
 #include <string>
 
