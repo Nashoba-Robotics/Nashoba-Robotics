@@ -25,7 +25,11 @@ void Robot :: Autonomous( void )
 	{
 		drive.TankDrive( -1.0f, 1.0f );
 		lineFollower.WaitUntilFacing( LineFollower::kScoringSide );
+
 		drive.TankDrive( 1.0f, 1.0f );
+		Wait( 2.0f );
+		
+		drive.TankDrive( 0.0f, 0.0f );
 	}
 	
 	else
