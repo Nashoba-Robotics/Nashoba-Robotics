@@ -12,17 +12,15 @@
 
 class Robot : public SimpleRobot
 {
-public:
-	Robot();
-	
-	void Autonomous( void );
-	void OperatorControl( void );
-	
 private:
-	Joystick primaryJoystick,
-			 secondaryJoystick;
+	Joystick joy1, joy2;
+	Jaguar motor1, motor2, motor3, motor4;
+	RobotDrive drive;
+	
+	LineFollower lineFollower;
+	
+	// Constants
+	const float kMainRunLoopDelta = 0.05;
 };
 
-// Macro required to start the robot
-// This basically generates a main() function.
 START_ROBOT_CLASS(Robot);
