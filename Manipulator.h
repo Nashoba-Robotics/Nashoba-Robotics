@@ -1,40 +1,40 @@
 /*
- * Manipulator.h
+ *	Manipulator.h
+ *	Nashoba Robotics 2011
  *
- *  Created on: Jan 10, 2011
- *      Author: Nick Alberts
+ *	Copyright 2011 Nick Alberts
+ *	All Rights Reserved
  */
 
 #ifndef MANIPULATOR_H_
 #define MANIPULATOR_H_
 
-#include "WpiLib.h"
-#inlcude "nr/thread.h"
+#include "WPILib.h"
+
+#include "nr/thread.h"
 #include "nr/diag/debug.h"
+
+#include "Claw.h"
+#include "Arm.h"
 
 class Manipulator : public nr::conc::thread::entry
 {
-
 public:
-	//constructer with arguments
-	Manipulator (Jaguar ArmMotor, Jaguar ClawMotorTop, Jaguar ClawMotorBottom, AnalogInput ArmPotentiometer, AnalogInput ClawPotentiometer){};
+	/**
+	 * Creates a new manipulator object
+	 * @param joy The joystick to dedicate to the manipulator
+	 */
+	Manipulator( Joystick &joy );
 
-	//general run function
+	/**
+	 * The thread entry function
+	 */
 	void Run();
 
-	//raise and lower
-	void ChangeOrientation();
-	//pulls tube in, and pulls tube out
-	void Grab();
-	void Release();
-	//Positions are 1, which corresponds to level, and 2 which corresponds to elevated
-	void SetLowerArm(int position);
-	double GetTilt();
-	void SetUpperArm (double angle);
-	int currentPosition;
-
 private:
-	nr::conc::mutex object_mutex;
+	Claw claw;
+	Arm arm;
+	Joystick joystick;
 
 };
 

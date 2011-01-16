@@ -1,60 +1,28 @@
 /*
- * manipulator.cpp
+ *	Manipulator.cpp
+ *	Nashoba Robotics 2011
  *
- *  Created on: Jan 10, 2011
- *      Author: Nick Alberts
+ *	Copyright 2011 Nick Alberts
+ *	All Rights Reserved
  */
 
 #include "Manipulator.h"
 
-Manipulator::Manipulator (Jaguar ArmMotor, Jaguar ClawMotorTop, Jaguar ClawMotorBottom, AnalogInput ArmPotentiometer, AnalogInput ClawPotentiometer){};
-
+Manipulator::Manipulator( Joystick &joy ):
+	joystick( joy )
 {
-
 }
 
 void Manipulator::Run()
 {
+	while ( IsOperatorControl() )
+	{
+		if ( joystick.GetRawButton( 2 ) )
+			SetLowerArm( abs( lowerarm - 1 ) );
 
+		// TODO: Add upper arm changing code
+	}
 }
 
-void Manipulator::ChangeOrientation()
-{
 
-}
-
-void Manipulator::Grab()
-{
-	clawMotorBottom.Set(.2);
-		clawMotorTop.Set(.2);
-		Wait(.7);
-		clawMotorBottom.Set(0);
-		clawMotorTop.Set(0);
-}
-
-void Manipulator::Release()
-{
-	clawMotorBottom.Set(-.2);
-		clawMotorTop.Set(-.2);
-		Wait(.7);
-		clawMotorBottom.Set(0);
-		clawMotorTop.Set(0);
-}
-
-void Manipulator::SetLowerArm(int position)
-{
-
-}
-
-void Manipulator::SetUpperArm(double angle)
-{
-
-}
-//Rough
-double Manipulator::GetTilt()
-{
-//actual code
-	return tilt;
-
-}
 
