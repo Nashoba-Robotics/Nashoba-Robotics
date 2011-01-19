@@ -6,7 +6,10 @@
  */
 
 #include "Arm.h"
-
+/**
+ * This function runs in the control thread, and continually sets the motors to the correct speed.
+ * The speed is determined by the difference in angle divided by a constant.
+ */
 void Arm::control_arm_motor( void *object )
 {
 	Arm *instance = (Arm *) object;
@@ -26,6 +29,9 @@ void Arm::control_arm_motor( void *object )
 
 
 // TODO: needs actual arguments and ports
+/**
+ * constructor for arm class
+ */
 Arm::Arm():
 	armMotor( 4 ),
 	armSolenoidRaise( 1 ),
@@ -35,7 +41,9 @@ Arm::Arm():
 {
 	lowerArm = false;
 }
-
+/**
+ * THis function sets the lower arm to a boolean position value:true corresponds to raised and false corresponds to lower
+ */
 void Arm::SetLowerArm( bool position )
 {
 
