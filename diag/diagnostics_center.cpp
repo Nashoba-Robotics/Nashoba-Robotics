@@ -39,7 +39,7 @@ diagnostics_center::diagnostics_center() throw ()
 : thread( this ), running( true )
 {
 	try {
-		thread.start();
+		thread.Start();
 	}
 
 	catch ( nr::conc::thread_exception &e ) {
@@ -76,7 +76,7 @@ void diagnostics_center::register_device( observable *device, const std::string 
 	}
 }
 
-void diagnostics_center::run( void *userinfo ) throw ()
+void diagnostics_center::Run( void *userinfo ) throw ()
 {
 	// TODO: This is the diagnostics server code.
 	// Might want to fix this up a little.
