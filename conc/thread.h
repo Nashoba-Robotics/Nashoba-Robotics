@@ -9,6 +9,7 @@
 #pragma once
 
 #include "thread_exception.h"
+#include <pthread.h>
 
 namespace nr {
 	namespace conc

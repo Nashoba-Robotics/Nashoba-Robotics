@@ -6,12 +6,9 @@
 #include "Robot.h"
  
 Robot :: Robot( void )
-:	motor1( 4, 1 ),
-	motor2( 4, 2 ),
-	motor3( 4, 3 ),
-	motor4( 4, 4 ),
-	drive( motor1, motor2, motor3, motor4 ),
-	lineFollower( 1, 1, 1 ) // FIXME: Not actual #s
+:	joy1( 1 ), joy2( 2 ),
+	drive( 1, 2, 3, 4 ),
+	lineFollower( 1, 2, 3, 4 ) // FIXME: Not actual #s
 {
 }
 

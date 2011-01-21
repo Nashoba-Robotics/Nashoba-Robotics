@@ -7,11 +7,12 @@
  */
 
 #include "LineFollower.h"
+#include <cmath>
 
-LineFollower( uint8_t sensor1Channel,
-			  uint8_t sensor2Channel,
-			  uint8_t sensor3Channel,
-			  uint8_t gyroChannel )
+LineFollower :: LineFollower( UINT8 sensor1Channel,
+			  UINT8 sensor2Channel,
+			  UINT8 sensor3Channel,
+			  UINT8 gyroChannel )
 :	sensor1( sensor1Channel ),
 	sensor2( sensor2Channel ),
 	sensor3( sensor3Channel ),
@@ -19,25 +20,14 @@ LineFollower( uint8_t sensor1Channel,
 {
 }
 
-LineFollower( uint8_t sensor1Slot, uint8_t sensor1Channel,
-			  uint8_t sensor2Slot, uint8_t sensor2Channel,
-			  uint8_t sensor3Slot, uint8_t sensor3Channel,
-			  uint8_t gyroSlot, uint8_t gyroChannel )
+LineFollower :: LineFollower( UINT8 sensor1Slot, UINT8 sensor1Channel,
+			  UINT8 sensor2Slot, UINT8 sensor2Channel,
+			  UINT8 sensor3Slot, UINT8 sensor3Channel,
+			  UINT8 gyroSlot, UINT8 gyroChannel )
 :	sensor1( sensor1Slot, sensor1Channel ),
 	sensor2( sensor2Slot, sensor2Channel ),
 	sensor3( sensor3Slot, sensor3Channel ),
 	gyroscope( gyroSlot, gyroChannel )
-{
-}
-
-LineFollower( LightSensor &s1,
-			  LightSensor &s2,
-			  LightSensor &s3,
-			  Gyro &gyro )
-:	sensor1( s1 ),
-	sensor2( s2 ),
-	sensor3( s3 ),
-	gyroscope( gyro )
 {
 }
 

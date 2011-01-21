@@ -13,25 +13,23 @@
 class LineFollower
 {
 public:
-	LineFollower( uint8_t sensor1Channel,
-				  uint8_t sensor2Channel,
-				  uint8_t sensor3Channel,
-				  uint8_t gyroChannel );
-	LineFollower( uint8_t sensor1Slot, uint8_t sensor1Channel,
-				  uint8_t sensor2Slot, uint8_t sensor2Channel,
-				  uint8_t sensor3Slot, uint8_t sensor3Channel,
-				  uint8_t gyroSlot, uint8_t gyroChannel );
-	LineFollower( LightSensor &s1,
-				  LightSensor &s2,
-				  LightSensor &s3,
-				  Gyro &gyro );
+	typedef DigitalInput LightSensor;
+	
+	LineFollower( UINT8 sensor1Channel,
+			UINT8 sensor2Channel,
+			UINT8 sensor3Channel,
+			UINT8 gyroChannel );
+	LineFollower( UINT8 sensor1Slot, UINT8 sensor1Channel,
+			UINT8 sensor2Slot, UINT8 sensor2Channel,
+			UINT8 sensor3Slot, UINT8 sensor3Channel,
+			UINT8 gyroSlot, UINT8 gyroChannel );
 	
 	enum FieldSide { kScoringSide, kDefendingSide };
 	
 	bool IsLineDetected();
 	
 	void WaitUntilLineDetected();
-	bool WaitUntilLineDetectedOrTimeout( float timeout );
+	bool WaitUntilLineDetectedOrTimeout( double timeout );
 	
 	void WaitUntilFacing( FieldSide side );
 	
