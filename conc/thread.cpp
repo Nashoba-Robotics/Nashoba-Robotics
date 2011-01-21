@@ -29,7 +29,7 @@ thread::~thread() throw ()
 {
 }
 
-void thread::start( void *userinfo ) throw ( thread_exception )
+void thread::Start( void *userinfo ) throw ( thread_exception )
 {
 	entry_data *ed = new entry_data( entry_point, userinfo );
 	if ( 0 != ::pthread_create( &raw_thread, NULL,
@@ -39,7 +39,7 @@ void thread::start( void *userinfo ) throw ( thread_exception )
 	}
 }
 
-void* thread::join() throw ( thread_exception )
+void* thread::Join() throw ( thread_exception )
 {
 	void *ptr = NULL;
 	if ( 0 != ::pthread_join( raw_thread, &ptr ) )
@@ -48,7 +48,7 @@ void* thread::join() throw ( thread_exception )
 	return ptr;
 }
 
-void thread::sleep( unsigned int secs ) throw ()
+void thread::Sleep( unsigned int secs ) throw ()
 {
 	struct timespec sleep_time, remaining_time;
 	sleep_time.tv_sec = secs;
@@ -56,7 +56,12 @@ void thread::sleep( unsigned int secs ) throw ()
 	nanosleep( &sleep_time, &remaining_time );
 }
 
-void thread::exit( void *retval ) throw ()
+void thread::Stop( int signal )
+{
+	pthread_kill( raw_thread, signal );
+}
+
+void thread::Exit( void *retval ) throw ()
 {
 	pthread_exit( retval );
 }
