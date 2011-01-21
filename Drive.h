@@ -11,23 +11,41 @@ class MotorPair
 {
 public:
 	MotorPair( CANJaguar fr, CANJaguar rr )
-	:	front( fr ), rear( rr )
+	:	front( fr ), rear( rr ),
+#ifdef NR_CLOSED_LOOP_CONTROL
+		frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
+		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
+#endif
 	{
 	}
 	
 	MotorPair( UINT8 fr, UINT8 rr, CANJaguar::ControlMode controlMode )
 	:	front( fr, controlMode ),
-		rear( rr, controlMode )
+		rear( rr, controlMode ),
+#ifdef NR_CLOSED_LOOP_CONTROL
+		frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
+		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
+#endif
 	{
 	}
 	
 	void Set( float value )
 	{
+#ifdef NR_CLOSED_LOOP_CONTROL
+		frontPID.Set( value );
+		rearPID.Set( value );
+#else
 		front.Set( value );
 		rear.Set(  value );
+#endif
 	}
 	
 	CANJaguar front, rear;
+	
+private:
+#ifdef NR_CLOSED_LOOP_CONTROL
+	PIDController frontPID, rearPID;
+#endif
 };
 
 class Drive
