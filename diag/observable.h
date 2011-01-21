@@ -22,6 +22,7 @@ namespace nr
 		public:
 			observable( const std::string &ident = "Device" )
 				: identifier( ident ) {}
+			virtual ~observable() {}
 		
 			virtual const std::string value() const throw () = 0;
 

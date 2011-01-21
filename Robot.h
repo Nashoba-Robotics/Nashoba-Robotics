@@ -9,18 +9,25 @@
 #pragma once
 
 #include "WPILib.h"
+#include "Drive.h"
+#include "LineFollower.h"
 
 class Robot : public SimpleRobot
 {
+public:
+	Robot( void );
+	
+	void Autonomous( void );
+	void OperatorControl( void );
+	
 private:
 	Joystick joy1, joy2;
-	Jaguar motor1, motor2, motor3, motor4;
-	RobotDrive drive;
+	Drive drive;
 	
 	LineFollower lineFollower;
 	
 	// Constants
-	const float kMainRunLoopDelta = 0.05;
+	static const float kMainRunLoopDelta = 0.05;
 };
 
 START_ROBOT_CLASS(Robot);
