@@ -19,7 +19,7 @@ namespace nr {
 		public:
 			observable_jaguar( const Jaguar& ) throw ();
 
-			const std::string value() const throw ();
+			const std::string value() throw ();
 
 			bool setable() const throw () { return true; }
 			void set( float value ) throw () { device.Set( value ); }
@@ -33,7 +33,7 @@ namespace nr {
 		public:
 			observable_can_jaguar( const CANJaguar& ) throw ();
 			
-			const std::string value() const throw ();
+			const std::string value() throw ();
 			
 			bool setable() const throw () { return true; }
 			void set( float value ) throw () { device.Set( value ); }
