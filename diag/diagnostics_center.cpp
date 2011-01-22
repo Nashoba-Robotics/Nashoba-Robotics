@@ -9,15 +9,20 @@
 #include "diagnostics_center.h"
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <ctime>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <sys/stat.h>
 
 using namespace nr::diag;
 
 static diagnostics_center *shared_diagnostics_center = NULL;
 static const char* headers = "charset=ASCII\r\nServer: NRWeb/1.0\r\n";
-static const char* source = "<html><head><style>body{font-family:monospace}</style><script>var r=new XMLHttpRequest();function t(){u();setTimeout(t,250);}function u(){r.onreadystatechange=function(){if(r.readyState==4&&r.status==200){document.getElementById('devices').innerHTML=r.responseText.replace('\\n','<br/>');}};r.open('GET','/devices');r.send(null)}</script></head><body onload='t()'><h1>Devices</h1><div id='devices'></div></body></html>";
+static const char* web_file_name = "diag/web/index.html";
 
-static inline const std::string http_format( const std::string& status, const std::string &headers, const std::string &content, const std::string &content_type = "text/plain" )
+static inline const std::string http_headers( const std::string& status, const std::string &headers, size_t content_length, const std::string &content_type = "text/plain" )
 {
 	std::stringstream ss;
 	ss << "HTTP/1.0 ";
@@ -25,21 +30,25 @@ static inline const std::string http_format( const std::string& status, const st
 	ss << "\r\n";
 	ss << headers;
 	ss << "Content-Length: ";
-	ss << content.size();
+	ss << content_length;
 	ss << "\r\n";
 	ss << "Content-Type: ";
 	ss << content_type;
 	ss << "\r\n\r\n";
-	ss << content;
 
 	return ss.str();
+}
+
+static inline const std::string http_format( const std::string& status, const std::string &headers, const std::string &content, const std::string &content_type = "text/plain" )
+{
+	return http_headers( status, headers, content.size(), content_type ) + content;
 }
 
 diagnostics_center::diagnostics_center() throw ()
 : thread( this ), running( true )
 {
 	try {
-		thread.start();
+		thread.Start();
 	}
 
 	catch ( nr::conc::thread_exception &e ) {
@@ -76,7 +85,7 @@ void diagnostics_center::register_device( observable *device, const std::string 
 	}
 }
 
-void diagnostics_center::run( void *userinfo ) throw ()
+void diagnostics_center::Run( void *userinfo ) throw ()
 {
 	// TODO: This is the diagnostics server code.
 	// Might want to fix this up a little.
@@ -144,7 +153,28 @@ void diagnostics_center::handle_client( nr::net::socket &client )
 
 		else if ( s.size() >= 5 && s.substr( 0, 5 ) == "GET /" )
 		{
-			client.write( http_format( "200 OK", headers, source, "text/html" ) );
+			FILE *fp = fopen( "diag/web/index.html", "r" );
+			if ( fp == NULL )
+			{
+				client.write( http_format( "500 Internal Server Error", headers, "500 Internal Server Error", "text/html" ) );
+				return;
+			}
+			
+			// Get the size of the file
+			struct stat file_status;
+			stat( web_file_name, &file_status );
+			
+			client.write( http_headers( "200 OK", headers, file_status.st_size, "text/html" ) );
+			std::ifstream web_file( web_file_name, std::ifstream::in );
+			
+			char buffer[256];
+			while ( web_file.getline( buffer, sizeof buffer) )
+			{
+				client.write( std::string( buffer ) + '\n' );
+				memset( buffer, 0, sizeof buffer );
+			}
+			
+			web_file.close();
 		}
 
 		else if ( s.size() >= 6 && s.substr( 0, 6 ) == "POST /" )

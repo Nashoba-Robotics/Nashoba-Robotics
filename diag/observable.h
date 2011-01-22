@@ -24,9 +24,9 @@ namespace nr
 				: identifier( ident ) {}
 			virtual ~observable() {}
 		
-			virtual const std::string value() const throw () = 0;
+			virtual const std::string value() throw () = 0;
 
-			virtual bool setable() const throw () { return false; }
+			virtual bool setable() throw () { return false; }
 			virtual void set( float value ) throw () {}
 		
 		private:

@@ -26,7 +26,11 @@
 #include <string>
 #include <cstdlib>
 
-nr::net::socket_exception::socket_exception( const char *desc ) throw ()
+#ifndef MSG_NOSIGNAL
+#define MSG_NOSIGNAL SO_NOSIGPIPE
+#endif
+
+socket_exception::socket_exception( const char *desc ) throw ()
 :	description( desc )
 {
 }
