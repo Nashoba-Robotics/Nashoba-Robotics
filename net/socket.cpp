@@ -15,7 +15,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#ifdef VXWORKS
+#ifdef WPILIB
 #include <sockLib.h>
 #endif
 
