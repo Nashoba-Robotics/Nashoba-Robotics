@@ -39,7 +39,7 @@ void Robot :: Autonomous( void )
 void Robot :: OperatorControl( void )
 {
 	GetWatchdog().SetEnabled( true );
-	GetWatchdog().SetTimeout( 0.1f );
+	GetWatchdog().SetExpiration( 0.1f );
 	
 	while ( IsOperatorControl() )
 	{

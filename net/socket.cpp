@@ -30,7 +30,7 @@
 #define MSG_NOSIGNAL SO_NOSIGPIPE
 #endif
 
-socket_exception::socket_exception( const char *desc ) throw ()
+nr::net::socket_exception::socket_exception( const char *desc ) throw ()
 :	description( desc )
 {
 }

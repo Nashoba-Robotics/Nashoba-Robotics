@@ -11,9 +11,9 @@ class MotorPair
 {
 public:
 	MotorPair( CANJaguar fr, CANJaguar rr )
-	:	front( fr ), rear( rr ),
+	:	front( fr ), rear( rr )
 #ifdef NR_CLOSED_LOOP_CONTROL
-		frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
+		,frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
 		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
 #endif
 	{
@@ -21,9 +21,9 @@ public:
 	
 	MotorPair( UINT8 fr, UINT8 rr, CANJaguar::ControlMode controlMode )
 	:	front( fr, controlMode ),
-		rear( rr, controlMode ),
+		rear( rr, controlMode )
 #ifdef NR_CLOSED_LOOP_CONTROL
-		frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
+		,frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
 		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
 #endif
 	{
