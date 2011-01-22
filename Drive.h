@@ -45,4 +45,6 @@ public:
 private:
 	MotorPair leftMotors;
 	MotorPair rightMotors;
+	
+	void InitializeDiagnostics();
 };

@@ -4,6 +4,8 @@
  */
 
 #include "Drive.h"
+#include "diag/diagnostics_center.h"
+#include "diag/observable_wpi.h"
 
 Drive :: Drive( CANJaguar frontLeftMotor,
 				CANJaguar rearLeftMotor,
@@ -12,6 +14,7 @@ Drive :: Drive( CANJaguar frontLeftMotor,
 :	leftMotors(  frontLeftMotor,  rearLeftMotor  ),
 	rightMotors( frontRightMotor, rearRightMotor )
 {
+	InitializeDiagnostics();
 }
 
 Drive :: Drive( UINT8 frontLeftMotor,
@@ -22,10 +25,21 @@ Drive :: Drive( UINT8 frontLeftMotor,
 :	leftMotors(  frontLeftMotor,  rearLeftMotor,  controlMode ),
 	rightMotors( frontRightMotor, rearRightMotor, controlMode )
 {
+	InitializeDiagnostics();
 }
 
 void Drive :: TankDrive( float left, float right )
 {
 	leftMotors.Set(  left );
 	rightMotors.Set( right );
+}
+
+void Drive :: InitializeDiagnostics()
+{
+	nr::diag::diagnostics_center &diag = nr::diag::diagnostics_center::get_shared_instance();
+	
+	diag.register_device( new nr::diag::observable_can_jaguar( leftMotors.front ), "Left Front Motor" );
+	diag.register_device( new nr::diag::observable_can_jaguar( leftMotors.rear ), "Left Rear Motor" );
+	diag.register_device( new nr::diag::observable_can_jaguar( rightMotors.front ), "Right Front Motor" );
+	diag.register_device( new nr::diag::observable_can_jaguar( rightMotors.rear ), "Right Rear Motor" );
 }
