@@ -15,9 +15,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#ifdef WPILIB
 #include <sockLib.h>
-#endif
 
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -25,6 +23,10 @@
 #include <unistd.h>
 #include <string>
 #include <cstdlib>
+
+#ifndef MSG_NOSIGNAL
+#define MSG_NOSIGNAL SO_NOSIGPIPE
+#endif
 
 nr::net::socket_exception::socket_exception( const char *desc ) throw ()
 :	description( desc )

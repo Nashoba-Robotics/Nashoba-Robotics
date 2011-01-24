@@ -1,6 +1,9 @@
 /*
- *	Robot.h
- *	Nashoba Robotics 2011
+ *  Robot.h
+ *  Nashoba Robotics 2011
+ *
+ *  Copyright 2011 RC Howe
+ *  All Rights Reserved
  */
 
 #pragma once
