@@ -17,7 +17,7 @@ namespace nr {
 		class observable_jaguar : public observable
 		{
 		public:
-			observable_jaguar( const Jaguar& ) throw ();
+			observable_jaguar( Jaguar& ) throw ();
 
 			const std::string value() throw ();
 
@@ -25,21 +25,34 @@ namespace nr {
 			void set( float value ) throw () { device.Set( value ); }
 
 		private:
-			Jaguar device;
+			Jaguar &device;
 		};
 		
-		class observable_can_jaguar : public observable
+		class observable_encoder : public observable
 		{
 		public:
-			observable_can_jaguar( const CANJaguar& ) throw ();
+			observable_encoder( Encoder & ) throw ();
 			
 			const std::string value() throw ();
 			
-			bool setable() const throw () { return true; }
-			void set( float value ) throw () { device.Set( value ); }
+			bool setable() const throw () { return false; }
+			void set( float value ) throw () { }
 			
 		private:
-			Jaguar device;
+			Encoder &device;
+		};
+		
+		class observable_digitalinput : public observable
+		{
+		public:
+			observable_digitalinput( DigitalInput & ) throw ();
+			
+			const std::string value() throw ();
+			bool setable() const throw () { return false; }
+			void set( float value ) throw () { }
+			
+		private:
+			DigitalInput &device;
 		};
 	}
 }

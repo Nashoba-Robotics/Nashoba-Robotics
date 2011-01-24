@@ -8,6 +8,8 @@
 
 #include "LineFollower.h"
 #include <cmath>
+#include "diag/diagnostics_center.h"
+#include "diag/observable_wpi.h"
 
 LineFollower :: LineFollower( UINT8 sensor1Channel,
 			  UINT8 sensor2Channel,
@@ -18,6 +20,7 @@ LineFollower :: LineFollower( UINT8 sensor1Channel,
 	sensor3( sensor3Channel ),
 	gyroscope( gyroChannel )
 {
+	InitializeDiagnostics();
 }
 
 LineFollower :: LineFollower( UINT8 sensor1Slot, UINT8 sensor1Channel,
@@ -29,6 +32,7 @@ LineFollower :: LineFollower( UINT8 sensor1Slot, UINT8 sensor1Channel,
 	sensor3( sensor3Slot, sensor3Channel ),
 	gyroscope( gyroSlot, gyroChannel )
 {
+	InitializeDiagnostics();
 }
 
 void LineFollower :: WaitUntilLineDetected()
@@ -39,21 +43,22 @@ void LineFollower :: WaitUntilLineDetected()
 
 bool LineFollower :: WaitUntilLineDetectedOrTimeout( double timeout )
 {
-	time_t start_time = time( NULL );
-	while ( true )
+	double time_remaining = timeout;
+	while ( time_remaining > 0 )
 	{
 		Wait( LineFollower::kWaitDelta );
+		time_remaining -= LineFollower::kWaitDelta;
 		
 		if ( IsLineDetected() )
 			return true;
-		if ( difftime( time( NULL ), start_time ) < timeout )
-			return false;
 	}
+	
+	return false;
 }
 
 bool LineFollower :: IsLineDetected()
 {
-	return false;
+	return sensor2.Get();
 }
 
 void LineFollower :: WaitUntilFacing( FieldSide side )
@@ -61,4 +66,13 @@ void LineFollower :: WaitUntilFacing( FieldSide side )
 	float angle = side == kScoringSide ? 0 : 180;
 	while ( fabs( gyroscope.GetAngle() - angle ) > kAngleError )
 		Wait( kWaitDelta );
+}
+
+void LineFollower :: InitializeDiagnostics()
+{
+	nr::diag::diagnostics_center &diag = nr::diag::diagnostics_center::get_shared_instance();
+
+	diag.register_device( new nr::diag::observable_digitalinput( sensor1 ), "Left Line Sensor" );
+	diag.register_device( new nr::diag::observable_digitalinput( sensor2 ), "Center Line Sensor" );
+	diag.register_device( new nr::diag::observable_digitalinput( sensor3 ), "Right Line Sensor" );
 }

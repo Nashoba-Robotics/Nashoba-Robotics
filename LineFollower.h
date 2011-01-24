@@ -33,6 +33,8 @@ public:
 	
 	void WaitUntilFacing( FieldSide side );
 	
+	void InitializeDiagnostics();
+	
 private:
 	static const float kWaitDelta = 0.005;
 	static const float kAngleError = 5.0f;
