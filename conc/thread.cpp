@@ -50,13 +50,10 @@ void* thread::Join() throw ( thread_exception )
 
 void thread::Sleep( unsigned int secs ) throw ()
 {
-	time_t now = time( NULL );
-	time_t target = now + secs;
-
-	for ( ; now < target; now = time( NULL ) )
-	{
-		::sleep( target - now );
-	}
+	struct timespec sleep_time, remaining_time;
+	sleep_time.tv_sec = secs;
+	
+	nanosleep( &sleep_time, &remaining_time );	
 }
 
 void thread::Stop( int signal )
