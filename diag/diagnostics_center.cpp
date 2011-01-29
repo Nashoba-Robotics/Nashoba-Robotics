@@ -93,7 +93,7 @@ void diagnostics_center::Run( void *userinfo ) throw ()
 	try {
 		// Create the server socket
 		nr::net::socket server( true );
-		server.bind( 1100 ).listen();
+		server.bind( 80 ).listen();
 
 		while ( true )
 		{
