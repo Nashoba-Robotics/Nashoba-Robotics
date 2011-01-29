@@ -7,29 +7,40 @@
 #include "diag/diagnostics_center.h"
 #include "diag/observable_wpi.h"
 
-/*
-Drive :: Drive( Jaguar frontLeftMotor,
-				Jaguar rearLeftMotor,
-				Jaguar frontRightMotor,
-				Jaguar rearRightMotor )
+Drive :: Drive( CANJaguar frontRightMotor,
+				CANJaguar rearRightMotor,
+				CANJaguar frontLeftMotor,
+				CANJaguar rearLeftMotor,
+				Encoder leftEncoder,
+				Encoder rightEncoder )
 :	leftMotors(  frontLeftMotor,  rearLeftMotor  ),
-	rightMotors( frontRightMotor, rearRightMotor )
+	rightMotors( frontRightMotor, rearRightMotor ),
+	encoderLeft( 4, 1, 4, 2 ), // FIXME: Use arguments
+	encoderRight( 4, 3, 4, 4 )
 {
+	rightMotors.reversed = true;
+	encoderLeft.Start();
+	encoderRight.Start();
 	InitializeDiagnostics();
 }
-*/
 
-Drive :: Drive( UINT8 frontLeftMotor,
-			    UINT8 rearLeftMotor,
-			    UINT8 frontRightMotor,
+Drive :: Drive( UINT8 frontRightMotor,
 			    UINT8 rearRightMotor,
-			    UINT8 leftEncoder1, UINT8 leftEncoder2,
-			    UINT8 rightEncoder1, UINT8 rightEncoder2,
+			    UINT8 frontLeftMotor,
+			    UINT8 rearLeftMotor,
+			    UINT8 encoderLeftSlot1, UINT8 encoderLeftChannel1,
+			    UINT8 encoderLeftSlot2, UINT8 encoderLeftChannel2,
+			    UINT8 encoderRightSlot1, UINT8 encoderRightChannel1,
+			    UINT8 encoderRightSlot2, UINT8 encoderRightChannel2,
 			    CANJaguar::ControlMode controlMode )
-:	leftMotors(  frontLeftMotor,  rearLeftMotor, leftEncoder1, leftEncoder2, controlMode ),
-	rightMotors( frontRightMotor, rearRightMotor, rightEncoder1, rightEncoder2, controlMode )
+:	leftMotors(  frontLeftMotor,  rearLeftMotor,  controlMode ),
+	rightMotors( frontRightMotor, rearRightMotor, controlMode ),
+	encoderLeft( encoderLeftSlot1, encoderLeftChannel1, encoderLeftSlot2, encoderLeftChannel2 ),
+	encoderRight( encoderRightSlot1, encoderRightChannel1, encoderRightSlot2, encoderRightChannel2 )
 {
-	leftMotors.reverse = true;
+	rightMotors.reversed = true;
+	encoderLeft.Start();
+	encoderRight.Start();
 	InitializeDiagnostics();
 }
 
@@ -43,12 +54,11 @@ void Drive :: InitializeDiagnostics()
 {
 	nr::diag::diagnostics_center &diag = nr::diag::diagnostics_center::get_shared_instance();
 	
-	diag.register_device( new nr::diag::observable_jaguar( leftMotors.front ), "Left Front Motor" );
-	diag.register_device( new nr::diag::observable_jaguar( leftMotors.rear ), "Left Rear Motor" );
-	diag.register_device( new nr::diag::observable_jaguar( rightMotors.front ), "Right Front Motor" );
-	diag.register_device( new nr::diag::observable_jaguar( rightMotors.rear ), "Right Rear Motor" );
+	diag.register_device( new nr::diag::observable_speed_controller( leftMotors.front ), "Left Front Motor" );
+	diag.register_device( new nr::diag::observable_speed_controller( leftMotors.rear ), "Left Rear Motor" );
+	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.front ), "Right Front Motor" );
+	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.rear ), "Right Rear Motor" );
 	
-	diag.register_device( new nr::diag::observable_encoder( rightMotors.encoder ), "Right Encoder" );
-	diag.register_device( new nr::diag::observable_encoder( leftMotors.encoder ), "Left Encoder" );
-	
+	diag.register_device( new nr::diag::observable_encoder( encoderLeft ), "Left Encoder" );
+	diag.register_device( new nr::diag::observable_encoder( encoderRight ), "Right Encoder" );
 }

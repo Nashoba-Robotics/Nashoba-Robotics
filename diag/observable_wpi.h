@@ -14,10 +14,10 @@
 namespace nr {
 	namespace diag
 	{
-		class observable_jaguar : public observable
+		class observable_speed_controller : public observable
 		{
 		public:
-			observable_jaguar( Jaguar& ) throw ();
+			observable_speed_controller( SpeedController& ) throw ();
 
 			const std::string value() throw ();
 
@@ -25,7 +25,7 @@ namespace nr {
 			void set( float value ) throw () { device.Set( value ); }
 
 		private:
-			Jaguar &device;
+			SpeedController &device;
 		};
 		
 		class observable_encoder : public observable

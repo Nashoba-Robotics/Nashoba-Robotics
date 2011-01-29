@@ -13,15 +13,15 @@
 
 using namespace nr::diag;
 
-observable_jaguar::observable_jaguar( Jaguar &j ) throw ()
+observable_speed_controller::observable_speed_controller( SpeedController &j ) throw ()
 : device( j )
 {
 }
 
-const std::string observable_jaguar::value() throw ()
+const std::string observable_speed_controller::value() throw ()
 {
 	char out[6];
-	::snprintf( out, sizeof out, "%f", device.Get() );
+	::snprintf( out, sizeof out, "%2f", device.Get() );
 	
 	return std::string( out );
 }
@@ -33,8 +33,8 @@ observable_encoder::observable_encoder( Encoder &e ) throw ()
 
 const std::string observable_encoder::value() throw ()
 {
-	char out[6];
-	::snprintf( out, sizeof out, "%f", device.Get() );
+	char out[10];
+	::snprintf( out, sizeof out, "%2f", device.GetDistance() );
 	
 	return std::string( out );
 }
@@ -47,8 +47,8 @@ observable_digitalinput::observable_digitalinput( DigitalInput &i ) throw ()
 const std::string observable_digitalinput::value() throw ()
 {
 	if ( device.Get() )
-		return "1";
-	return "0";
+		return "True";
+	return "False";
 }
 
 #endif
