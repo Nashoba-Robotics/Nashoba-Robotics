@@ -58,6 +58,11 @@ void Drive :: InitializeDiagnostics()
 	diag.register_device( new nr::diag::observable_speed_controller( leftMotors.rear ), "Left Rear Motor" );
 	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.front ), "Right Front Motor" );
 	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.rear ), "Right Rear Motor" );
+
+	diag.register_device( new nr::diag::observable_jaguar_current( leftMotors.front ), "Left Front Current" );
+	diag.register_device( new nr::diag::observable_jaguar_current( leftMotors.rear ), "Left Rear Current" );
+	diag.register_device( new nr::diag::observable_jaguar_current( rightMotors.front ), "Right Front Current" );
+	diag.register_device( new nr::diag::observable_jaguar_current( rightMotors.rear ), "Right Rear Current" );
 	
 	diag.register_device( new nr::diag::observable_encoder( encoderLeft ), "Left Encoder" );
 	diag.register_device( new nr::diag::observable_encoder( encoderRight ), "Right Encoder" );

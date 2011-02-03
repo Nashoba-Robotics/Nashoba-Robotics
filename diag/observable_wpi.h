@@ -54,5 +54,18 @@ namespace nr {
 		private:
 			DigitalInput &device;
 		};
+		
+		class observable_jaguar_current : public observable
+		{
+		public:
+			observable_jaguar_current( CANJaguar & ) throw ();
+			
+			const std::string value() throw ();
+			bool setable() const throw () { return false; }
+			void set( float value ) throw () {}
+			
+		private:
+			CANJaguar &device;
+		};
 	}
 }

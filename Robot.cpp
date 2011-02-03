@@ -19,30 +19,35 @@ void Robot :: Autonomous( void )
 {
 	GetWatchdog().SetEnabled( false );
 	
-	// Drive forward for two seconds
-	drive.TankDrive( 0.2f, 0.2f );
-	if ( lineFollower.WaitUntilLineDetectedOrTimeout( 5.0f ) )
-	{
-		drive.TankDrive( -0.5f, 0.5f );
-		lineFollower.WaitUntilFacing( LineFollower::kScoringSide );
-
-		drive.TankDrive( 0.5f, 0.5f );
-		Wait( 2.0f );
-		
-		drive.TankDrive( 0.0f, 0.0f );
-	}
+	bool pastY = false;
 	
-	else
+	while ( true )
 	{
-	//	drive.TankDrive( 0.0f, 0.0f );
-		drive.TankDrive( 0.3f, -0.3f );
+		if ( pastY && lineFollower.sensor1.Get() && lineFollower.sensor2.Get() && lineFollower.sensor3.Get() )
+		{
+			drive.TankDrive( 0.0, 0.0 );
+			return;
+		}
+		else if ( lineFollower.sensor2.Get() )
+			drive.TankDrive( -0.5, -0.5 );
+		else if ( lineFollower.sensor3.Get() && lineFollower.sensor1.Get() )
+		{
+			drive.TankDrive( -0.5, 0.5 );
+			Wait( 0.2 );
+			pastY = true;
+		}
+		else if ( lineFollower.sensor3.Get() )
+			drive.TankDrive( -0.5, 0.1 );
+		else if ( lineFollower.sensor1.Get() )
+			drive.TankDrive( 0.1, -0.5 );
+		
+		Wait( 0.001 );
 	}
 }
 
 void Robot :: OperatorControl( void )
 {
 	GetWatchdog().SetEnabled( false );
-	GetWatchdog().SetExpiration( 0.1f );
 	
 	while ( IsOperatorControl() )
 	{

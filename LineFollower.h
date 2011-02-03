@@ -35,10 +35,11 @@ public:
 	
 	void InitializeDiagnostics();
 	
+	LightSensor sensor1, sensor2, sensor3;
+	
 private:
-	static const float kWaitDelta = 0.005;
+	static const float kWaitDelta = 0.01;
 	static const float kAngleError = 5.0f;
 	
-	LightSensor sensor1, sensor2, sensor3;
-	Gyro gyroscope;
+//	Gyro gyroscope;
 };
