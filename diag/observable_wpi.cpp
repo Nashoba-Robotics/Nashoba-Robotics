@@ -51,4 +51,17 @@ const std::string observable_digitalinput::value() throw ()
 	return "False";
 }
 
+observable_jaguar_current::observable_jaguar_current( CANJaguar &j ) throw ()
+:	device( j )
+{
+}
+
+const std::string observable_jaguar_current::value() throw ()
+{
+	char out[10];
+	::snprintf( out, sizeof out, "%2f", device.GetOutputCurrent() );
+	
+	return std::string( out );
+}
+
 #endif

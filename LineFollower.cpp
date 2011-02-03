@@ -17,8 +17,7 @@ LineFollower :: LineFollower( UINT8 sensor1Channel,
 			  UINT8 gyroChannel )
 :	sensor1( sensor1Channel ),
 	sensor2( sensor2Channel ),
-	sensor3( sensor3Channel ),
-	gyroscope( gyroChannel )
+	sensor3( sensor3Channel )
 {
 	InitializeDiagnostics();
 }
@@ -29,8 +28,8 @@ LineFollower :: LineFollower( UINT8 sensor1Slot, UINT8 sensor1Channel,
 			  UINT8 gyroSlot, UINT8 gyroChannel )
 :	sensor1( sensor1Slot, sensor1Channel ),
 	sensor2( sensor2Slot, sensor2Channel ),
-	sensor3( sensor3Slot, sensor3Channel ),
-	gyroscope( gyroSlot, gyroChannel )
+	sensor3( sensor3Slot, sensor3Channel )
+//	gyroscope( gyroSlot, gyroChannel )
 {
 	InitializeDiagnostics();
 }
@@ -63,9 +62,11 @@ bool LineFollower :: IsLineDetected()
 
 void LineFollower :: WaitUntilFacing( FieldSide side )
 {
+	/*
 	float angle = side == kScoringSide ? 0 : 180;
 	while ( fabs( gyroscope.GetAngle() - angle ) > kAngleError )
 		Wait( kWaitDelta );
+	*/
 }
 
 void LineFollower :: InitializeDiagnostics()

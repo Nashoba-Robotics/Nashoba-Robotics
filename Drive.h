@@ -18,6 +18,8 @@ public:
 		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
 #endif
 	{
+		front.SetSafetyEnabled( false );
+		rear.SetSafetyEnabled( false );
 		reversed = false;
 	}
 	
@@ -29,6 +31,8 @@ public:
 		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
 #endif
 	{
+		front.SetSafetyEnabled( false );
+		rear.SetSafetyEnabled( false );
 		reversed = false;
 	}
 	
