@@ -55,7 +55,7 @@ namespace nr{
 			nr::conc::mutex devices_mutex;
 
 			// Threading Stuff
-			void run( void *userinfo = NULL ) throw ();
+			void Run( void *userinfo = NULL ) throw ();
 			nr::conc::thread thread;
 			bool running;
 

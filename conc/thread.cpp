@@ -73,7 +73,7 @@ void* thread::entry_function( void *d )
 
 	delete data;
 
-	en->run( args );
+	en->Run( args );
 
 	return NULL;
 }

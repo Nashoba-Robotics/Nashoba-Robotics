@@ -1,0 +1,258 @@
+<?xml version = '1.0' encoding = 'utf-8' ?>
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml" xml:lang = "en" lang = "en">
+	<head>
+		<title>Test Page</title>
+		<style>
+			/*
+			 *	style.css
+			 */
+
+			body
+			{
+				font-family: DejaVu Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
+				-webkit-user-select: none;
+				cursor: default;
+			}
+
+			header
+			{
+				display: block;
+				font-size: 140%;
+				font-family: DejaVu Sans Light, Helvetica Neue UltraLight, Helvetica, Arial, sans-serif;
+				border-top: #0a0 3px solid;
+				border-bottom: #eee 1px solid;
+				padding: 15px;
+			}
+
+			header h1, header h2
+			{
+				display: inline;
+				font-size: 100%;
+				margin: 0px;
+				font-weight: 100;
+			}
+
+			header h2
+			{
+				border-left: #aaa 1px solid;
+				padding-left: 10px;
+				margin-left: 5px;
+			}
+
+			nav
+			{
+				color: gray;
+				display: block;
+				padding: 5px;
+			}
+
+			nav a.menuitem
+			{
+				font-family: DejaVu Sans Light, Helvetica Neue UltraLight, Helvetica, Arial, sans-serif;
+				color: inherit;
+				text-decoration: none;
+				padding: 10px;
+			}
+
+			nav a.menuitem:hover
+			{
+				color: black;
+			}
+
+			#device-container
+			{
+				margin-top: 10px;
+			}
+
+			.device
+			{
+				float: left;
+				width: 300px;
+				border: #eee solid 1px;
+				padding: 10px;
+				margin-right: 5px;
+				margin-bottom: 5px;
+				-webkit-transition: all 0.2s ease;
+			}
+
+			.device:hover
+			{
+				background: -webkit-gradient( linear, left top, right bottom, from( #f8fff4 ), to( white ) );
+				border-color: #ccc;
+			}
+
+			.device .title
+			{
+				font-size: 125%;
+				margin-bottom: 5px;
+			}
+
+			.device .type
+			{
+				color: #888;
+			}
+
+			.device .display
+			{
+				font-size: 225%;
+			}
+		</style>
+		<script lang = "javascript" type = "text/javascript">
+		// <![CDATA[
+		"use strict";
+		
+		function stripQuotes( s )
+		{
+			if ( s.charAt( 0 ) == '"' && s.charAt( s.length - 1 ) == '"' )
+				return s.substring( 1, s.length - 1 );
+			return s;
+		}
+
+		var Application = {
+			"init": function()
+			{
+				document.getElementById( 'ip-address' ).innerHTML =
+					window.location.hostname || "No Address";
+				Application.runloop();
+			},
+	
+			"runloop": function()
+			{
+				try {
+					// Send the request
+					var request = new XMLHttpRequest();
+					request.open( 'GET', 'devices', false );
+					request.onreadystatechange = function()
+					{
+						if ( request.readyState == 4 && request.status == 200 )
+						{
+							Application.Update( request.responseText );
+						}
+					}
+					request.send( null );
+				}
+				
+				catch ( e ) { console.log( "Exception caught: " + e ); }
+		
+				setTimeout( Application.runloop, 100 );
+			},
+	
+			"Update": function( raw )
+			{
+				for ( var i = 0; i < Application.Device.activeDevices.length; i++ )
+				{
+					Application.Device.activeDevices[i].taint = true;
+				}
+				
+				var values = raw.split( '\n' );
+				
+				var len = values.length;
+				for ( var i = 0; i < len; i++ )
+				{
+					var info = values[i].split( ',' );
+					var identifier = info[1];
+					var value = info[2];
+					
+					var setDevice = false;
+					
+					for ( var j = 0; j < Application.Device.activeDevices.length; j++ )
+					{
+						if ( Application.Device.activeDevices[j].identifier == stripQuotes( identifier ) )
+						{
+							Application.Device.activeDevices[j].set( value );
+							setDevice = true;
+							break;
+						}
+					}
+					
+					if ( ! setDevice )
+					{
+						var dev = new Application.Device( identifier );
+						dev.show();
+					}
+				}
+				
+				for ( var i = 0; i < Application.Device.activeDevices.length; i++ )
+				{
+					if ( Application.Device.activeDevices[i].taint == false )
+						Application.Device.activeDevices.splice( i, 1 ).hide();
+				}
+			},
+
+			"Device": function( identifier, type )
+			{
+				if ( typeof identifier === "undefined" )
+					throw "Invalid Identifier: " + identifier;
+	
+				this.identifier = identifier;
+				if ( this.identifier.charAt( 0 ) == '"' && this.identifier.charAt( this.identifier.length - 1 ) == '"' )
+					this.identifier = this.identifier.substring( 1, this.identifier.length - 1 );
+
+				this.type = type;
+				this.element = Application.Device.createElement( this.identifier, this.type );
+	
+				this.show = function ()
+				{
+					Application.Device.activeDevices.push( this );
+					document.getElementById( 'device-container' ).appendChild( this.element );
+				};
+				
+				this.hide = function ()
+				{
+					Application.Device.activeDevices.splice( Application.Device.activeDevices.indexOf( this ), 1 );
+					document.getElementById( 'device-container' ).removeChild( this.element );
+				}
+		
+				this.set = function ( value )
+				{
+					this.element.display.innerHTML = ("" + parseFloat(value) != "NaN") ? parseFloat( value ).toFixed( 2 ) : value;
+				};
+			},
+		}
+
+		Application.Device.createElement = function ( id, type )
+		{
+			var element = document.createElement( 'div' );
+			element.setAttribute( 'id', 'device-' + id.replace( " ", "_" ) );
+			element.setAttribute( 'class', 'device' );
+
+			var title = document.createElement( 'div' );
+			title.setAttribute( 'class', 'title' );
+			title.innerHTML = id;
+	
+			var typeElement = document.createElement( 'div' );
+			typeElement.setAttribute( 'class', 'type' );
+			typeElement.innerHTML = type || "Unknown";
+
+			element.display = document.createElement( 'div' );
+			element.display.setAttribute( 'class', 'display' );
+			element.display.innerHTML = "---";
+
+			element.appendChild( title );
+			element.appendChild( typeElement );
+			element.appendChild( element.display );
+
+			return element;
+		};
+
+		Application.Device.activeDevices = [];
+		//]]>
+		</script>
+	</head>
+	
+	<body onload = "Application.init();">
+		<header>
+			<h1 id = "ip-address"></h1>
+			<h2>Diagnostics</h2>
+		</header>
+		<nav>
+			<a class = "menuitem" href = "#all">All</a>
+			<a class = "menuitem" href = "#inputs">Inputs</a>
+			<a class = "menuitem" href = "#outputs">Outputs</a>
+		</nav>
+		
+		<div id = "device-container">
+		</div>
+	</body>
+</html>
