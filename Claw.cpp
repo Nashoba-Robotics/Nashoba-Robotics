@@ -9,39 +9,71 @@
 
 //needs port numbers
 Claw::Claw():
-clawMotorTop( 4, 1 ),
-clawMotorBottom( 4, 2 )
+clawServoTop( 1 ),
+clawServoBottom( 2 ),
+claw_control_thread(Claw::claw_servo_stop)
 {
 
 };
 
-void Claw::claw_motor_stop( void *object )
+void Claw::claw_servo_stop( void *object)
 {
+
 	claw *instance = (claw *) object;
-	Wait( 0.7 );
-	instance->clawMotorTop.Set( 0.0 );
-	instance->clawMotorBottom.Set( 0.0 );
+	
+	Wait( 2.0f );
+	instance->clawServoTop.Set( 176 );
+	instance->clawServoBottom.Set( 176 );
 }
+
+
 //pulls both motors in
 
 //TODO: Real times and motor speeds
 
 void Claw::Grab()
 {
+
 	if ( ! claw_control_mutex.TryLock() )
 	{
 		claw_control_thread.Stop();
 	}
 	claw_control_thread.Start( (void *) this );
-	clawMotorBottom.Set( 0.4 );
-	clawMotorTop.Set( 0.4 );
+	clawServoTop.Set( 0 );
+	clawServoBottom.Set( 256 );
 }
 
 //pushes the tube out, with the top motor faster to change orientation
+//TODO: REAL VALUES
 void Claw::Release()
 {
-	clawMotorBottom.Set( -0.2 );
-	clawMotorTop.Set( -0.5 );
-	Wait( 0.7 );
+	if ( ! claw_control_mutex.TryLock() )
+	{
+		claw_control_thread.Stop();
+	}
+	claw_control_thread.Start( (void *) this );
+	clawServoTop.Set( 256 );
+	clawServoBottom.Set( 0 );
+}
 
+void Claw::RotateUp()
+{
+		if ( ! claw_control_mutex.TryLock() )
+		{
+			claw_control_thread.Stop();
+		}
+		claw_control_thread.Start( (void *) this );
+		clawServoTop.Set( 0 );
+		clawServoBottom.Set( 0 );
+}
+
+void Claw::RotateDown()
+{
+		if ( ! claw_control_mutex.TryLock() )
+		{
+			claw_control_thread.Stop();
+		}
+		claw_control_thread.Start( (void *) this );
+		clawServoTop.Set( 256 );
+		clawServoBottom.Set( 256 );
 }

@@ -36,7 +36,8 @@ Arm::Arm():
 	armMotor( 4 ),
 	armSolenoidRaise( 1 ),
 	armSolenoidLower( 2 ),
-	armEncoder( 4 )
+	armEncoder( 4 ),
+	arm_control_thread(Arm::control_arm_motor)
 
 {
 	lowerArm = false;
@@ -52,12 +53,14 @@ void Arm::SetLowerArm( bool position )
 		//fires the arm solenoid
 		armSolenoidRaise->Set( true );
 		armSolenoidLower->Set( false );
+		lowerArm=true;
 	}
 
 	else if ( lowerArm && ! position )
 	{
 		armSolenoidLower->Set( true );
 		armSolenoidRaise->Set( false );
+		lowerArm=false;
 	}
 }
 

@@ -18,9 +18,11 @@ void Manipulator::Run()
 	while ( IsOperatorControl() )
 	{
 		if ( joystick.GetRawButton( 2 ) )
-			SetLowerArm( abs( lowerarm - 1 ) );
+		{
+			SetLowerArm( ! lowerArm );
+		}
 
-		// TODO: Add upper arm changing code
+		arm.SetUpperArm( (joy.GetY()+1)*kAngleRatio/2 );
 	}
 }
 

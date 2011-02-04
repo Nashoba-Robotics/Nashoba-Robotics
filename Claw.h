@@ -15,13 +15,14 @@ public:
 	// pulls tube in, and pulls tube out
 	void Grab();
 	void Release();
-
+	void RotateUp();
+	void RotateDown();
 private:
-	Jaguar clawMotorTop;
-	Jaguar clawMotorBottom;
+	Servo clawServoTop;
+	Servo clawServoBottom;
 	nr::conc::thread claw_control_thread;
 	nr::conc::mutex claw_mutex;
-	static void claw_motor_stop();
+	static void claw_motor_control();
 };
 
 #endif /* CLAW_H_ */
