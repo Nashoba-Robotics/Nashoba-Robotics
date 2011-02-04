@@ -14,32 +14,22 @@
 namespace nr {
 	namespace diag
 	{
-		class observable_jaguar : public observable
+		class observable_speed_controller : public observable
 		{
 		public:
-			observable_jaguar( const Jaguar& ) throw ();
-
+			observable_speed_controller( const SpeedController& ) throw ();
+			
 			const std::string value() throw ();
-
+			
 			bool setable() const throw () { return true; }
 			void set( float value ) throw () { device.Set( value ); }
-
+			
 		private:
-			Jaguar device;
+			SpeedController &device;
 		};
 		
-		class observable_can_jaguar : public observable
-		{
-		public:
-			observable_can_jaguar( const CANJaguar& ) throw ();
-			
-			const std::string value() throw ();
-			
-			bool setable() const throw () { return true; }
-			void set( float value ) throw () { device.Set( value ); }
-			
-		private:
-			Jaguar device;
-		};
+		// For backwards compatibility
+		typedef observable_speed_controller observable_jaguar;
+		typedef observable_speed_controller observable_can_jaguar;
 	}
 }
