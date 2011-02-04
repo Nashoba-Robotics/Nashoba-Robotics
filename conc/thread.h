@@ -9,7 +9,6 @@
 #pragma once
 
 #include "thread_exception.h"
-#include <pthread.h>
 
 namespace nr {
 	namespace conc
@@ -34,7 +33,7 @@ namespace nr {
 				 *  taken from the first argument to the thread::start(void*)
 				 *  method.
 				 */
-				virtual void Run( void *userinfo = NULL ) throw () = 0;
+				virtual void run( void *userinfo = NULL ) throw () = 0;
 			};
 
 			/**
@@ -50,7 +49,7 @@ namespace nr {
 				 */
 				function_entry( void(*fn)(void*) ) throw () : function( fn ) {}
 
-				void Run( void *userinfo ) throw () { function( userinfo ); }
+				void run( void *userinfo ) throw () { function( userinfo ); }
 
 			private:
 				void(*function)(void*);
@@ -73,14 +72,14 @@ namespace nr {
 			 *
 			 *	@param userinfo Information to be passed to the entry point
 			 */
-			void Start( void *userinfo = NULL ) throw ( thread_exception );
+			void start( void *userinfo = NULL ) throw ( thread_exception );
 
 			/**
 			 *  Joins the given thread object to the calling thread.
 			 *
 			 *	@return The returned value from the thread::exit() method.
 			 */
-			void* Join() throw ( thread_exception );
+			void* join() throw ( thread_exception );
 
 			/**
 			 *  Sleeps the calling thread. Note that this sleeps across
@@ -89,7 +88,7 @@ namespace nr {
 			 *
 			 *	@param secs Time to sleep, in seconds
 			 */
-			static void Sleep( unsigned int secs ) throw ();
+			static void sleep( unsigned int secs ) throw ();
 
 			/**
 			 *  Exits the current thread, returning the passed value
@@ -97,14 +96,7 @@ namespace nr {
 			 *  @param retval The value to return to a thread joined to this
 			 *  one.
 			 */
-			static void Exit( void *retval = NULL ) throw ();
-			
-			/**
-			 *	Kills the given thread, using SIGKILL by default.
-			 *	
-			 *	@param signal The signal to pass to the killed thread.
-			 */
-			void Stop( int signal = SIGKILL );
+			static void exit( void *retval = NULL ) throw ();
 
 		private:
 			pthread_t raw_thread;

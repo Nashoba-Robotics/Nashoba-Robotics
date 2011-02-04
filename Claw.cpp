@@ -1,5 +1,4 @@
 /*
-<<<<<<< HEAD
  * Claw.cpp
  *
  *  Created on: Jan 13, 2011
@@ -46,26 +45,3 @@ void Claw::Release()
 	Wait( 0.7 );
 
 }
-=======
- *	Claw.cpp
- *	Nashoba Robotics 2011
- */
-
-void Claw :: RotateTubeTo( float angle )
-{
-	topServo.SetAngle( angle * kTopGearRatio );
-	bottomServo.SetAngle( angle * kBottonGearRatio );
-}
-
-void Claw :: ReleaseTube()
-{
-	topServo.SetAngle( Servo::GetMaxAngle() )
-	bottomServo.SetAngle( Servo::GetMinAngle() );
-}
-
-void Claw :: GrabTube()
-{
-	topServo.SetAngle( Servo::GetMaxAngle() )
-	bottomServo.SetAngle( Servo::GetMinAngle() );
-}
->>>>>>> 83d07d249ae3b4e66502441270b70214f77a6d2c
