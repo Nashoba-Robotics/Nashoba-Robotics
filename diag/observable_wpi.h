@@ -67,5 +67,9 @@ namespace nr {
 		private:
 			CANJaguar &device;
 		};
+		
+		// For backwards compatibility
+		typedef observable_speed_controller observable_jaguar;
+		typedef observable_speed_controller observable_can_jaguar;
 	}
 }

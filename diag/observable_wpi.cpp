@@ -13,15 +13,16 @@
 
 using namespace nr::diag;
 
-observable_speed_controller::observable_speed_controller( SpeedController &j ) throw ()
-: device( j )
+observable_speed_controller::observable_speed_controller( const SpeedController &d ) throw ()
+:	device( d )
 {
 }
 
 const std::string observable_speed_controller::value() throw ()
 {
-	char out[6];
-	::snprintf( out, sizeof out, "%2f", device.Get() );
+	static char out[6];
+	memset( out, 0, sizeof( out ) );
+	::snprintf( out, sizeof out, "%f", device.Get() );
 	
 	return std::string( out );
 }
@@ -54,14 +55,6 @@ const std::string observable_digitalinput::value() throw ()
 observable_jaguar_current::observable_jaguar_current( CANJaguar &j ) throw ()
 :	device( j )
 {
-}
-
-const std::string observable_jaguar_current::value() throw ()
-{
-	char out[10];
-	::snprintf( out, sizeof out, "%2f", device.GetOutputCurrent() );
-	
-	return std::string( out );
 }
 
 #endif
