@@ -6,6 +6,8 @@
  */
 
 #include "Arm.h"
+#include "diag/diagnostics_center.h"
+
 /**
  * This function runs in the control thread, and continually sets the motors to the correct speed.
  * The speed is determined by the difference in angle divided by a constant.
@@ -41,6 +43,10 @@ Arm::Arm():
 
 {
 	lowerArm = false;
+	
+	nr::diag::diagnostics_center& diag = nr::diag::diagnostics_center::get_shared_instance();
+	diag.register_device( new nr::diag::observable_speed_controller( armMotor, "Arm Motor" ) );
+	diag.register_device( new nr::diag::observable_encoder( armEncoder, "Arm Encoder" ) );
 }
 /**
  * THis function sets the lower arm to a boolean position value:true corresponds to raised and false corresponds to lower
