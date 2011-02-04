@@ -12,27 +12,15 @@
 
 using namespace nr::diag;
 
-observable_jaguar::observable_jaguar( const Jaguar &j )
-: device( j )
+observable_speed_controller::observable_speed_controller( const SpeedController &d )
+:	device( d )
 {
 }
 
-const std::string observable_jaguar::value()
+const std::string observable_speed_controller::value() throw ()
 {
-	char out[6];
-	::snprintf( out, sizeof out, "%f", device.Get() );
-	
-	return std::string( out );
-}
-
-observable_can_jaguar::observable_can_jaguar( const CANJaguar &j )
-: device( j )
-{
-}
-
-const std::string observable_can_jaguar::value()
-{
-	char out[6];
+	static char out[6];
+	memset( out, 0, sizeof( out ) );
 	::snprintf( out, sizeof out, "%f", device.Get() );
 	
 	return std::string( out );
