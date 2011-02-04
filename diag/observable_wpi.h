@@ -17,15 +17,55 @@ namespace nr {
 		class observable_speed_controller : public observable
 		{
 		public:
-			observable_speed_controller( const SpeedController& ) throw ();
+			observable_speed_controller( SpeedController& ) throw ();
+
+			const std::string value() throw ();
+
+			bool setable() const throw () { return true; }
+			void set( float value ) throw () { device.Set( value ); }
+
+		private:
+			SpeedController &device;
+		};
+		
+		class observable_encoder : public observable
+		{
+		public:
+			observable_encoder( Encoder & ) throw ();
 			
 			const std::string value() throw ();
 			
-			bool setable() const throw () { return true; }
-			void set( float value ) throw () { device.Set( value ); }
+			bool setable() const throw () { return false; }
+			void set( float value ) throw () { }
 			
 		private:
-			SpeedController &device;
+			Encoder &device;
+		};
+		
+		class observable_digitalinput : public observable
+		{
+		public:
+			observable_digitalinput( DigitalInput & ) throw ();
+			
+			const std::string value() throw ();
+			bool setable() const throw () { return false; }
+			void set( float value ) throw () { }
+			
+		private:
+			DigitalInput &device;
+		};
+		
+		class observable_jaguar_current : public observable
+		{
+		public:
+			observable_jaguar_current( CANJaguar & ) throw ();
+			
+			const std::string value() throw ();
+			bool setable() const throw () { return false; }
+			void set( float value ) throw () {}
+			
+		private:
+			CANJaguar &device;
 		};
 		
 		// For backwards compatibility
