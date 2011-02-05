@@ -14,14 +14,34 @@
 namespace nr {
 	namespace diag
 	{
+		/**
+		 *	An observable speed controller
+		 */
 		class observable_speed_controller : public observable
 		{
 		public:
+			/**
+			 *	Creates a new observable speed controller
+			 *	@param The speed controller to observe
+			 */
 			observable_speed_controller( const SpeedController& ) throw ();
 			
+			/**
+			 *	Gets the value from the speed controller
+			 *	@return The value from the speed controller
+			 */
 			const std::string value() throw ();
 			
+			/**
+			 *	All speed controllers are settable, so this returns true
+			 *	@return true, as all speed controllers are settable
+			 */
 			bool setable() const throw () { return true; }
+			
+			/**
+			 *	Sets the speed controller with its `Set(float)' method
+			 *	@param value The value to set to
+			 */
 			void set( float value ) throw () { device.Set( value ); }
 			
 		private:
