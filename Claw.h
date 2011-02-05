@@ -12,16 +12,36 @@
 #include "conc/thread.h"
 #include "conc/mutex.h"
 #include "diag/observable_wpi.h"
+/**
+* @brief Class that controls the claw and gripper
+*/
 
 class Claw
 {
 public:
+	/**
+	* @brief Constructs an instance of the claw class.
+	*/
 	Claw();
-	void ChangeOrientation();
-	// pulls tube in, and pulls tube out
+	
+	/**
+	* @brief Runs the claw servos to pull the game piece in.
+	*/
 	void Grab();
+	
+	/**
+	* @brief Runs the claw servos to push the game piece out.
+	*/
 	void Release();
+
+	/**
+	* @brief Rotates the game piece above the claw.
+	*/
 	void RotateUp();
+
+	/**
+	* @brief Rotates the game piece below the claw.
+	*/
 	void RotateDown();
 private:
 	Servo clawServoTop1;

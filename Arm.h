@@ -13,19 +13,44 @@
 #include "conc/mutex.h"
 #include "diag/observable_wpi.h"
 
+/**
+* @brief Class that controls the upper and lower arms. 
+*/
+
 class Arm
 {
 public:
-	// Positions are 1, which corresponds to level, and 2 which corresponds to elevated
+	/**
+	* @brief Constructs an instance of the arm class.
+	*/
 	Arm();
+
+	/**
+	* @brief Moves the lower arm to the given position.
+	* @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
+	*/
 	void SetLowerArm( bool position );
+	
+	/**
+	* @brief Returns the current angle of the upper arm
+	*/
+
 	double GetTilt();
+	
+	/**
+	* @brief Begins to move the upper arm to the desired angle.
+	* @param angle The desired angle of the upper arm
+	*/
 	void SetUpperArm( double angle );
+	
+	/*
+	* @brief The current position of the lower arm 
+	*/
 	bool lowerArm;
 
 private:
 	double upperArmAngle;
-	Jaguar armMotor;
+	CANJaguar armMotor;
 	Solenoid armSolenoidRaise;
 	Solenoid armSolenoidLower;
 	Encoder armEncoder;
