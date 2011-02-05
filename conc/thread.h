@@ -21,7 +21,7 @@ namespace nr {
 		{
 		public:
 			/**
-			 *	A functor class describing an entry point for a thread
+			 *	@brief A functor class describing an entry point for a thread
 			 */
 			class entry
 			{
@@ -38,7 +38,7 @@ namespace nr {
 			};
 
 			/**
-			 *	A specific thread entry point describing a function entry
+			 *	@brief A specific thread entry point describing a function entry
 			 */
 			class function_entry : public entry
 			{

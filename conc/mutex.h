@@ -35,7 +35,7 @@ namespace nr {
 			~mutex() throw ();
 
 			/**
-			 *  A lock on a mutex, in an RAII-compatible fashion
+			 *  @brief A lock on a mutex, in an RAII-compatible fashion
 			 */
 			class lock
 			{
