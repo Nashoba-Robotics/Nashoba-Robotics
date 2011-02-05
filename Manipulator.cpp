@@ -13,16 +13,17 @@ Manipulator::Manipulator( Joystick &joy ):
 {
 }
 
-void Manipulator::Run()
+void Manipulator::Run( void* ) throw ()
 {
-	while ( IsOperatorControl() )
+	// TODO: resolve issue of getting state of robot in Manipulator thread and object 
+	while ( /*IsOperatorControl()*/ true )
 	{
 		if ( joystick.GetRawButton( 2 ) )
 		{
-			SetLowerArm( ! lowerArm );
+			arm.SetLowerArm( ! arm.lowerArm );
 		}
 
-		arm.SetUpperArm( (joy.GetY()+1)*kAngleRatio/2 );
+		arm.SetUpperArm( (joystick.GetY()+1)*kAngleRatio/2 );
 	}
 }
 

@@ -11,9 +11,7 @@
 
 #include "WPILib.h"
 
-#include "nr/thread.h"
-#include "nr/diag/debug.h"
-
+#include "conc/thread.h"
 #include "Claw.h"
 #include "Arm.h"
 
@@ -29,11 +27,12 @@ public:
 	/**
 	 * The thread entry function
 	 */
-	void Run();
+	void Run( void* ) throw ();
 
 private:
 	Claw claw;
 	Arm arm;
+	Joystick &joystick;
 
 	//TODO: fix angle ratio to correspond to actual geometry
 	const static double kAngleRatio = 1.0;

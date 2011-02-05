@@ -9,11 +9,15 @@
 #define ARM_H_
 
 #include "WPILib.h"
+#include "conc/thread.h"
+#include "conc/mutex.h"
+#include "diag/observable_wpi.h"
 
 class Arm
 {
 public:
 	// Positions are 1, which corresponds to level, and 2 which corresponds to elevated
+	Arm();
 	void SetLowerArm( bool position );
 	double GetTilt();
 	void SetUpperArm( double angle );
