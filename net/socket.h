@@ -18,7 +18,7 @@ namespace nr
 	namespace net
 	{
 		/**
-		 *	A class to represent a socket exception
+		 *	@brief A class to represent a socket exception
 		 */
 		class socket_exception : public std::exception
 		{
@@ -40,7 +40,7 @@ namespace nr
 		};
 		
 		/**
-		 *	A class that represents a socket.
+		 *	@brief A TCP socket
 		 *
 		 *	A server socket can be easily created by creating it as a server socket and calling .bind( port ).listen(), and then accepting connections
 		 *	Note that sockets are automatically closed when they go out of scope, unless explicit_close is set to true

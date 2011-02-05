@@ -15,7 +15,7 @@ namespace nr {
 	namespace conc
 	{
 		/**
-		 *	A class describing a thread
+		 *	@brief A class describing a thread
 		 */
 		class thread
 		{

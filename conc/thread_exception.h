@@ -14,7 +14,7 @@ namespace nr {
 	namespace conc
 	{
 		/**
-		 *  A thread exception
+		 *  @brief A thread exception
 		 */
 		class thread_exception : public std::exception
 		{

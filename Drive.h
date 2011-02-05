@@ -9,12 +9,12 @@
 #include "CANJaguar.h"
 
 /**
- *	A pair of motors, which can be conveniently set together
+ *	@brief A pair of motors, which can be conveniently set together
  */
 class MotorPair;
 
 /**
- *	The class to drive the robot
+ *	@brief The class to drive the robot
  */
 class Drive
 {

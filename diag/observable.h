@@ -18,7 +18,7 @@ namespace nr
 		class diagnostics_center;
 		
 		/**
-		 *	An abstract class for devices to be used in the diagnostics center
+		 *	@brief An abstract class for devices to be used in the diagnostics center
 		 */
 		class observable
 		{

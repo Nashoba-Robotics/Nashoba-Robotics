@@ -19,8 +19,7 @@ namespace nr {
 	namespace conc
 	{
 		/**
-		 *  A class representing a mutex. This is an abstraction over a
-		 *  pthread_mutex
+		 *  @brief A class representing a mutex. This is an abstraction over a pthread_mutex
 		 */
 		class mutex
 		{
