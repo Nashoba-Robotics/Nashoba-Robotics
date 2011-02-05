@@ -7,7 +7,7 @@
 
 #include "Arm.h"
 #include "diag/diagnostics_center.h"
-#include "Math.h"
+#include <math.h>
 /**
  * This function runs in the control thread, and continually sets the motors to the correct speed.
  * The speed is determined by the difference in angle divided by a constant.
