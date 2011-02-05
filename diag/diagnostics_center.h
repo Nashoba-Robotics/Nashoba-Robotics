@@ -20,6 +20,8 @@ namespace nr{
 		class observable;
 		
 		/**
+		 *	@brief A diagnostics class that takes observable objects and hosts a web server with values
+		 *
 		 *	A singleton class representing a diagnostics center and server. Individual
 		 *	inputs and outputs register themselves with the diagnostics center by using
 		 *	the `register_device' method. Devices must provide a unique identifier when
