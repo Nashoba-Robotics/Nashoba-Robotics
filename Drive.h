@@ -11,7 +11,71 @@
 /**
  *	@brief A pair of motors, which can be conveniently set together
  */
-class MotorPair;
+class MotorPair
+{
+public:
+	/**
+	 *	@brief Creates the motor pair with the given motors
+	 *	@param fr The "front" motor
+	 *	@param rr The "rear" motor
+	 */
+	MotorPair( CANJaguar fr, CANJaguar rr )
+	:	front( fr ), rear( rr )
+#ifdef NR_CLOSED_LOOP_CONTROL
+		,frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
+		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
+#endif
+	{
+		front.SetSafetyEnabled( false );
+		rear.SetSafetyEnabled( false );
+		reversed = false;
+	}
+	
+	/**
+	 *	@brief Creates the motor pair with the given motors
+	 *	@param fr The "front" motor CAN number
+	 *	@param rr The "rear" motor CAN number
+	 *	@param controlMode The CAN control mode to use
+	 */
+	MotorPair( UINT8 fr, UINT8 rr, CANJaguar::ControlMode controlMode )
+	:	front( fr, controlMode ),
+		rear( rr, controlMode )
+#ifdef NR_CLOSED_LOOP_CONTROL
+		,frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, front, front ),
+		rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, rear, rear )
+#endif
+	{
+		front.SetSafetyEnabled( false );
+		rear.SetSafetyEnabled( false );
+		reversed = false;
+	}
+	
+	/**
+	 *	Sets the motor pair
+	 *	@param value The value to set both motors to
+	 */
+	void Set( float value )
+	{
+#ifdef NR_CLOSED_LOOP_CONTROL
+		frontPID.Set( value );
+		rearPID.Set( value );
+#else
+		front.Set( value * (reversed ? -1 : 1) );
+		rear.Set(  value * (reversed ? -1 : 1) );
+#endif
+	}
+	
+	CANJaguar front, rear;
+
+	/**
+	 *	@param Whether to reverse the direction of the motors from the parameter passed to set
+	 */
+	bool reversed;
+private:
+#ifdef NR_CLOSED_LOOP_CONTROL
+	PIDController frontPID, rearPID;
+#endif
+};
 
 /**
  *	@brief The class to drive the robot
