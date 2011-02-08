@@ -4,8 +4,11 @@
  */
 
 #include "Drive.h"
-#include "diag/diagnostics_center.h"
-#include "diag/observable_wpi.h"
+
+#define NR_USE_WPILIB
+#include "diag/DiagnosticsCenter.h"
+#include "diag/ObservableWPI.h"
+#undef NR_USE_WPILIB
 
 MotorPair::MotorPair( CANJaguar &fr, CANJaguar &rr, Encoder &e )
 :	front( fr ), rear( rr ),
@@ -91,18 +94,13 @@ void Drive :: TankDrive( float left, float right )
 
 void Drive :: InitializeDiagnostics()
 {
-	nr::diag::diagnostics_center &diag = nr::diag::diagnostics_center::get_shared_instance();
-	
-	diag.register_device( new nr::diag::observable_speed_controller( leftMotors.front  ), "Left Front Motor" );
-	diag.register_device( new nr::diag::observable_speed_controller( leftMotors.rear   ), "Left Rear Motor" );
-	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.front ), "Right Front Motor" );
-	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.rear  ), "Right Rear Motor" );
+	nr::diag::DiagnosticsCenter &diag = nr::diag::SharedDiagnosticsCenter();
 
-	diag.register_device( new nr::diag::observable_jaguar_current( leftMotors.front  ), "Left Front Current" );
-	diag.register_device( new nr::diag::observable_jaguar_current( leftMotors.rear   ), "Left Rear Current" );
-	diag.register_device( new nr::diag::observable_jaguar_current( rightMotors.front ), "Right Front Current" );
-	diag.register_device( new nr::diag::observable_jaguar_current( rightMotors.rear  ), "Right Rear Current" );
+	diag.RegisterDevice( leftMotors.front,  "Left Front Motor" );
+	diag.RegisterDevice( leftMotors.rear,   "Left Rear Motor" );
+	diag.RegisterDevice( rightMotors.front, "Right Front Motor" );
+	diag.RegisterDevice( rightMotors.rear,  "Right Rear Motor" );
 	
-	diag.register_device( new nr::diag::observable_encoder( leftMotors.encoder  ), "Left Encoder" );
-	diag.register_device( new nr::diag::observable_encoder( rightMotors.encoder ), "Right Encoder" );
+	diag.RegisterDevice( leftMotors.encoder,  "Left Encoder" );
+	diag.RegisterDevice( rightMotors.encoder, "Right Encoder" );
 }
