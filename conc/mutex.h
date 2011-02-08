@@ -11,7 +11,7 @@
 #include "ThreadException.h"
 #include <pthread.h>
 
-#define SYNCHRONIZED(MUTEX) class nr::conc::mutex::Lock MUTEX##_macro_lock = MUTEX;\
+#define SYNCHRONIZED(MUTEX) class nr::conc::Mutex::Lock MUTEX##_macro_lock = MUTEX;\
 	for ( ; (MUTEX##_macro_lock) ;\
 		MUTEX##_macro_lock.release() )
 
