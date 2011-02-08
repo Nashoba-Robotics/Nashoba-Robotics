@@ -1,5 +1,5 @@
 /*
- *	thread_exception.h
+ *	ThreadException.h
  *	Nashoba Robotics 2011
  *
  *	Copyright 2010 RC Howe
@@ -16,19 +16,19 @@ namespace nr {
 		/**
 		 *  @brief A thread exception
 		 */
-		class thread_exception : public std::exception
+		class ThreadException : public std::exception
 		{
 		public:
 			/**
 			 *  Creates a new thread exception with the given message
 			 *  @param msg The error message
 			 */
-			explicit thread_exception( const std::string& msg ) throw ();
+			explicit ThreadException( const std::string& msg ) throw ();
 
 			/**
 			 *  Cleans up any resources used by this exception
 			 */
-			virtual ~thread_exception() throw ();
+			virtual ~ThreadException() throw ();
 
 			/**
 			 *  Returns the description string

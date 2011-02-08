@@ -56,7 +56,7 @@ DiagnosticsCenter::DiagnosticsCenter() throw ()
 		thread.Start();
 	}
 
-	catch ( nr::conc::thread_exception &e ) {
+	catch ( nr::conc::ThreadException &e ) {
 		std::cerr << "Unable to start diagnostics center: " << e.what() << std::endl;
 		running = false;
 	}
@@ -66,10 +66,19 @@ DiagnosticsCenter::~DiagnosticsCenter() throw ()
 {
 }
 
-void DiagnosticsCenter::RegisterDevice( Observable &device, const std::string &identifier ) throw ()
+#ifdef NR_USE_WPILIB
+
+void DiagnosticsCenter::RegisterDevice( SpeedController &device, const std::string &identifier ) throw ()
 {
-	RegisterDevice( &device, identifier );
+	RegisterDevice( new ObservableSpeedController( device ), identifier );
 }
+
+void DiagnosticsCenter::RegisterDevice( Encoder &device, const std::string &identifier ) throw ()
+{
+	RegisterDevice( new ObservableEncoder( device ), identifier );
+}
+
+#endif
 
 void DiagnosticsCenter::RegisterDevice( Observable *device, const std::string &identifier ) throw ()
 {
