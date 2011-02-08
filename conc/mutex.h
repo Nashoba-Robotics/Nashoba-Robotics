@@ -9,6 +9,7 @@
 #pragma once
 
 #include "thread_exception.h"
+#include <pthread.h>
 
 #define SYNCHRONIZED(MUTEX) class nr::conc::mutex::lock MUTEX##_macro_lock = MUTEX;\
 	for ( ; (MUTEX##_macro_lock) ;\
