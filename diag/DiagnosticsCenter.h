@@ -1,5 +1,5 @@
 /*
- *  diagnostics_center.h
+ *  DiagnosticsCenter.h
  *  Nashoba Robotics 2011
  *
  *  Copyright 2010 RC Howe
@@ -17,7 +17,14 @@
 namespace nr{
 	namespace diag
 	{
-		class observable;
+		class Observable;
+		class DiagnosticsCenter;
+		
+		/**
+		 *	Gets the shared diagnostics center
+		 *	@return The shared diagnostics center instance
+		 */
+		DiagnosticsCenter& SharedDiagnosticsCenter();
 		
 		/**
 		 *	@brief A diagnostics class that takes observable objects and hosts a web server with values
@@ -30,30 +37,30 @@ namespace nr{
 		 *	Any device that wishes to register itself should either be a subclass of
 		 *	the `observable' class or should implement a wrapper class that descends
 		 *	from `observable'. Wrappers for common WPILib classes are available in the
-		 *	observable_wpi.h header.
+		 *	ObservableWPI.h header.
 		 */
-		class diagnostics_center : private nr::conc::thread::entry
+		class DiagnosticsCenter : private nr::conc::thread::entry
 		{
 		public:
 			/**
 			 *	Registers a given device and unique identifier pair with the diagnostics
 			 *	center. See the class description for more detail.
 			 */
-			void register_device( observable &device, const std::string &identifier ) throw ();
+			void RegisterDevice( Observable &device, const std::string &identifier ) throw ();
 			
 			/**
 			 *	Registers a given device and unique identifier pair with the diagnostics
 			 *	center. See the class description for more detail.
 			 */
-			void register_device( observable *device, const std::string &identifier ) throw ();
+			void RegisterDevice( Observable *device, const std::string &identifier ) throw ();
 			
 			/**
 			 *	Gets the shared diagnostics center instance
 			 */
-			static diagnostics_center& get_shared_instance() throw ();
+			static DiagnosticsCenter& GetSharedInstance() throw ();
 
 		private:
-			std::vector<observable*> devices;
+			std::vector<Observable*> devices;
 			nr::conc::mutex devices_mutex;
 
 			// Threading Stuff
@@ -62,13 +69,13 @@ namespace nr{
 			bool running;
 
 			// Constructors and destructors
-			diagnostics_center() throw ();
-			virtual ~diagnostics_center() throw ();
+			DiagnosticsCenter() throw ();
+			virtual ~DiagnosticsCenter() throw ();
 
-			diagnostics_center( const diagnostics_center& );
-			diagnostics_center& operator=( const diagnostics_center& );
+			DiagnosticsCenter( const DiagnosticsCenter& );
+			DiagnosticsCenter& operator=( const DiagnosticsCenter& );
 
-			void handle_client( nr::net::socket &client );
+			void HandleClient( nr::net::socket &client );
 		};
 	}
 }

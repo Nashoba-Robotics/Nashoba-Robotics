@@ -1,12 +1,12 @@
 /*
- *  diagnostics_center.cpp
+ *  DiagnosticsCenter.cpp
  *  Nashoba Robotics 2011
  *
  *  Copyright 2010 RC Howe
  *  All Rights Reserved
  */
 
-#include "diagnostics_center.h"
+#include "DiagnosticsCenter.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -18,9 +18,14 @@
 
 using namespace nr::diag;
 
-static diagnostics_center *shared_diagnostics_center = NULL;
+static DiagnosticsCenter *shared_diagnostics_center = NULL;
 static const char* headers = "charset=ASCII\r\nServer: NRWeb/1.0\r\n";
 static const char* web_file_name = "diag/web/index.html";
+
+DiagnosticsCenter& SharedDiagnosticsCenter()
+{
+	return DiagnosticsCenter::GetSharedInstance();
+}
 
 static inline const std::string http_headers( const std::string& status, const std::string &headers, size_t content_length, const std::string &content_type = "text/plain" )
 {
@@ -44,7 +49,7 @@ static inline const std::string http_format( const std::string& status, const st
 	return http_headers( status, headers, content.size(), content_type ) + content;
 }
 
-diagnostics_center::diagnostics_center() throw ()
+DiagnosticsCenter::DiagnosticsCenter() throw ()
 : thread( this ), running( true )
 {
 	try {
@@ -57,23 +62,23 @@ diagnostics_center::diagnostics_center() throw ()
 	}
 }
 
-diagnostics_center::~diagnostics_center() throw ()
+DiagnosticsCenter::~DiagnosticsCenter() throw ()
 {
 }
 
-void diagnostics_center::register_device( observable &device, const std::string &identifier ) throw ()
+void DiagnosticsCenter::RegisterDevice( Observable &device, const std::string &identifier ) throw ()
 {
-	register_device( &device, identifier );
+	RegisterDevice( &device, identifier );
 }
 
-void diagnostics_center::register_device( observable *device, const std::string &identifier ) throw ()
+void DiagnosticsCenter::RegisterDevice( Observable *device, const std::string &identifier ) throw ()
 {
 	if ( device == NULL || identifier.empty() )
 		return;
 	
 	device->identifier = identifier;
 
-	std::vector<observable*>::iterator it;
+	std::vector<Observable*>::iterator it;
 	for ( it = devices.begin(); it != devices.end(); it++ )
 	{
 		if ( device->identifier == (*it)->identifier )
@@ -85,7 +90,7 @@ void diagnostics_center::register_device( observable *device, const std::string 
 	}
 }
 
-void diagnostics_center::Run( void *userinfo ) throw ()
+void DiagnosticsCenter::Run( void *userinfo ) throw ()
 {
 	// TODO: This is the diagnostics server code.
 	// Might want to fix this up a little.
@@ -99,7 +104,7 @@ void diagnostics_center::Run( void *userinfo ) throw ()
 		{
 			// Blocks until a client connects
 			nr::net::socket client = server.accept();
-			handle_client( client );
+			HandleClient( client );
 		}
 	}
 
@@ -109,7 +114,7 @@ void diagnostics_center::Run( void *userinfo ) throw ()
 	}
 }
 
-void diagnostics_center::handle_client( nr::net::socket &client )
+void DiagnosticsCenter::HandleClient( nr::net::socket &client )
 {
 	try {
 		std::string s = "";
@@ -134,7 +139,7 @@ void diagnostics_center::handle_client( nr::net::socket &client )
 			time_t now = time( NULL );
 
 			// Generate the devices list and write it to the socket
-			std::vector<observable*>::iterator it;
+			std::vector<Observable*>::iterator it;
 			for ( it = devices.begin(); it != devices.end(); it++ )
 			{
 				ss << now;
@@ -142,9 +147,9 @@ void diagnostics_center::handle_client( nr::net::socket &client )
 				ss << '"';
 				ss << (*it)->identifier;
 				ss << "\",";
-				ss << (*it)->value();
+				ss << (*it)->Value();
 				ss << ',';
-				ss << ((*it)->setable() ? "YES" : "NO");
+				ss << ((*it)->Setable() ? "YES" : "NO");
 				ss << '\n';
 			}
 
@@ -193,10 +198,10 @@ void diagnostics_center::handle_client( nr::net::socket &client )
 	}
 }
 
-diagnostics_center& diagnostics_center::get_shared_instance() throw ()
+DiagnosticsCenter& DiagnosticsCenter::GetSharedInstance() throw ()
 {
 	if ( shared_diagnostics_center == NULL )
-		shared_diagnostics_center = new diagnostics_center();
+		shared_diagnostics_center = new DiagnosticsCenter();
 
 	return *shared_diagnostics_center;
 }
