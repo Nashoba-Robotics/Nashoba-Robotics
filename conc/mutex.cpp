@@ -1,62 +1,62 @@
 /*
- *	mutex.cpp
+ *	Mutex.cpp
  *	Nashoba Robotics 2011
  *
  *	Copyright 2010 RC Howe
  *	All Rights Reserved
  */
 
-#include "mutex.h"
+#include "Mutex.h"
 #include <iostream>
 #include <pthread.h>
 
 using namespace nr::conc;
 
-mutex::mutex() throw ( thread_exception )
+Mutex::Mutex() throw ( ThreadException )
 {
 	if ( 0 != ::pthread_mutex_init( &raw_mutex, NULL ) )
-		throw thread_exception( "Unable to create mutex" );
+		throw ThreadException( "Unable to create mutex" );
 }
 
-mutex::~mutex() throw ()
+Mutex::~Mutex() throw ()
 {
 	if ( 0 != ::pthread_mutex_destroy( &raw_mutex ) )
 		std::cerr << "Unable to destroy mutex" << std::endl;
 }
 
-void mutex::acquire() throw ( thread_exception )
+void Mutex::Acquire() throw ( ThreadException )
 {
 	if ( 0 != ::pthread_mutex_lock( &raw_mutex ) )
-		throw thread_exception( "Unable to lock mutex" );
+		throw ThreadException( "Unable to lock mutex" );
 }
 
-void mutex::release() throw ( thread_exception )
+void Mutex::Release() throw ( ThreadException )
 {
 	if ( 0 != ::pthread_mutex_unlock( &raw_mutex ) )
-		throw thread_exception( "Unable to unlock mutex" );
+		throw ThreadException( "Unable to unlock mutex" );
 }
 
-bool mutex::trylock() throw ()
+bool Mutex::TryLock() throw ()
 {
 	return (0 == ::pthread_mutex_trylock( &raw_mutex ));
 }
 
-mutex::lock::lock( mutex &m ) throw ( thread_exception )
+Mutex::Lock::Lock( Mutex &m ) throw ( ThreadException )
 :	mut( m ),
  	locked( true )
 {
-	mut.acquire();
+	mut.Acquire();
 }
 
-mutex::lock::~lock() throw ( thread_exception )
+Mutex::Lock::~Lock() throw ( ThreadException )
 {
 	if ( locked )
-		mut.release();
+		mut.Release();
 }
 
-void mutex::lock::release() throw ( thread_exception )
+void Mutex::Lock::Release() throw ( ThreadException )
 {
 	locked = false;
-	mut.release();
+	mut.Release();
 }
 

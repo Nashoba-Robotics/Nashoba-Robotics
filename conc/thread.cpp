@@ -1,5 +1,5 @@
 /*
- *  thread.cpp
+ *  Thread.cpp
  *  Nashoba Robotics 2011
  *
  *  Copyright 2010 RC Howe
@@ -14,41 +14,41 @@ using namespace nr::conc;
 class entry_data
 {
 public:
-	entry_data( thread::entry *e, void *a ) : thread_entry( e ), args( a ) {}
+	entry_data( Thread::Entry *e, void *a ) : thread_entry( e ), args( a ) {}
 
-	thread::entry *thread_entry;
+	Thread::Entry *thread_entry;
 	void *args;
 };
 
-thread::thread( entry *en ) throw ()
+Thread::Thread( Entry *en ) throw ()
 : entry_point( en )
 {
 };
 
-thread::~thread() throw ()
+Thread::~Thread() throw ()
 {
 }
 
-void thread::Start( void *userinfo ) throw ( thread_exception )
+void Thread::Start( void *userinfo ) throw ( ThreadException )
 {
 	entry_data *ed = new entry_data( entry_point, userinfo );
 	if ( 0 != ::pthread_create( &raw_thread, NULL,
-			thread::entry_function, (void *) ed ) )
+			Thread::entry_function, (void *) ed ) )
 	{
-		throw thread_exception( "Unable to create thread" );
+		throw ThreadException( "Unable to create thread" );
 	}
 }
 
-void* thread::Join() throw ( thread_exception )
+void* Thread::Join() throw ( ThreadException )
 {
 	void *ptr = NULL;
 	if ( 0 != ::pthread_join( raw_thread, &ptr ) )
-		throw thread_exception( "Unable to join thread" );
+		throw ThreadException( "Unable to join thread" );
 
 	return ptr;
 }
 
-void thread::Sleep( unsigned int secs ) throw ()
+void Thread::Sleep( unsigned int secs ) throw ()
 {
 	struct timespec sleep_time, remaining_time;
 	sleep_time.tv_sec = secs;
@@ -56,21 +56,21 @@ void thread::Sleep( unsigned int secs ) throw ()
 	nanosleep( &sleep_time, &remaining_time );
 }
 
-void thread::Stop( int signal )
+void Thread::Stop( int signal )
 {
 	pthread_kill( raw_thread, signal );
 }
 
-void thread::Exit( void *retval ) throw ()
+void Thread::Exit( void *retval ) throw ()
 {
 	pthread_exit( retval );
 }
 
-void* thread::entry_function( void *d )
+void* Thread::entry_function( void *d )
 {
 	entry_data *data = (entry_data *) d;
 
-	thread::entry *en = data->thread_entry;
+	Thread::Entry *en = data->thread_entry;
 	void *args = data->args;
 
 	delete data;

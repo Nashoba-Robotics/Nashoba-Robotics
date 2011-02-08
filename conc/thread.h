@@ -1,5 +1,5 @@
 /*
- *  thread.h
+ *  Thread.h
  *  Nashoba Robotics 2011
  *
  *  Copyright 2010 RC Howe
@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "thread_exception.h"
+#include "ThreadException.h"
 #include <pthread.h>
 
 namespace nr {
@@ -17,13 +17,13 @@ namespace nr {
 		/**
 		 *	A class describing a thread
 		 */
-		class thread
+		class Thread
 		{
 		public:
 			/**
 			 *	A functor class describing an entry point for a thread
 			 */
-			class entry
+			class Entry
 			{
 			public:
 				/**
@@ -40,7 +40,7 @@ namespace nr {
 			/**
 			 *	A specific thread entry point describing a function entry
 			 */
-			class function_entry : public entry
+			class FunctionEntry : public Entry
 			{
 			public:
 				/**
@@ -48,7 +48,7 @@ namespace nr {
 				 *
 				 *	@param fn The function to be contained in the class
 				 */
-				function_entry( void(*fn)(void*) ) throw () : function( fn ) {}
+				FunctionEntry( void(*fn)(void*) ) throw () : function( fn ) {}
 
 				void Run( void *userinfo ) throw () { function( userinfo ); }
 
@@ -61,26 +61,26 @@ namespace nr {
 			 *
 			 *	@param en Entry Point
 			 */
-			thread( entry *en ) throw ();
+			Thread( Entry *en ) throw ();
 
 			/**
 			 *	Destroys a thread, cleaning up any resources used
 			 */
-			virtual ~thread() throw ();
+			virtual ~Thread() throw ();
 
 			/**
 			 *  Starts a thread
 			 *
 			 *	@param userinfo Information to be passed to the entry point
 			 */
-			void Start( void *userinfo = NULL ) throw ( thread_exception );
+			void Start( void *userinfo = NULL ) throw ( ThreadException );
 
 			/**
 			 *  Joins the given thread object to the calling thread.
 			 *
 			 *	@return The returned value from the thread::exit() method.
 			 */
-			void* Join() throw ( thread_exception );
+			void* Join() throw ( ThreadException );
 
 			/**
 			 *  Sleeps the calling thread. Note that this sleeps across
@@ -108,11 +108,11 @@ namespace nr {
 
 		private:
 			pthread_t raw_thread;
-			entry *entry_point;
+			Entry *entry_point;
 
 			// Disallow copy and assign
-			thread( thread& );
-			thread& operator=( thread& );
+			Thread( Thread& );
+			Thread& operator=( Thread& );
 
 			// This is the internal start point for the thread
 			static void* entry_function( void *args );
