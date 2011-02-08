@@ -66,10 +66,19 @@ DiagnosticsCenter::~DiagnosticsCenter() throw ()
 {
 }
 
-void DiagnosticsCenter::RegisterDevice( Observable &device, const std::string &identifier ) throw ()
+#ifdef NR_USE_WPILIB
+
+void DiagnosticsCenter::RegisterDevice( SpeedController &device, const std::string &identifier ) throw ()
 {
-	RegisterDevice( &device, identifier );
+	RegisterDevice( new ObservableSpeedController( device ), identifier );
 }
+
+void DiagnosticsCenter::RegisterDevice( Encoder &device, const std::string &identifier ) throw ()
+{
+	RegisterDevice( new ObservableEncoder( device ), identifier );
+}
+
+#endif
 
 void DiagnosticsCenter::RegisterDevice( Observable *device, const std::string &identifier ) throw ()
 {

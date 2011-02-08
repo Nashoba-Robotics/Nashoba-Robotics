@@ -12,7 +12,11 @@
 #include "../conc/thread.h"
 #include "../conc/mutex.h"
 #include "../net/socket.h"
-#include "observable.h"
+#include "Observable.h"
+
+#ifdef NR_USE_WPILIB
+#include "ObservableWPI.h"
+#endif
 
 namespace nr{
 	namespace diag
@@ -44,13 +48,22 @@ namespace nr{
 			 *	Registers a given device and unique identifier pair with the diagnostics
 			 *	center. See the class description for more detail.
 			 */
-			void RegisterDevice( Observable &device, const std::string &identifier ) throw ();
+			void RegisterDevice( Observable *device, const std::string &identifier ) throw ();
 			
+#ifdef NR_USE_WPILIB
+#define NR_USE_WPILIB
 			/**
-			 *	Registers a given device and unique identifier pair with the diagnostics
+			 *	Registers a given speed controller and unique identifier pair with the diagnostics
 			 *	center. See the class description for more detail.
 			 */
-			void RegisterDevice( Observable *device, const std::string &identifier ) throw ();
+			void RegisterDevice( SpeedController &device, const std::string &identifier ) throw ();
+			
+			/**
+			 *	Registers a given encoder and unique identifier pair with the diagnostics
+			 *	center. See the class description for more detail.
+			 */
+			void RegisterDevice( Encoder &device, const std::string &identifier ) throw ();
+#endif
 			
 			/**
 			 *	Gets the shared diagnostics center instance
