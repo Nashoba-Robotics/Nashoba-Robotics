@@ -4,8 +4,58 @@
  */
 
 #include "Drive.h"
-#include "diag/diagnostics_center.h"
-#include "diag/observable_wpi.h"
+
+#define NR_USE_WPILIB
+#include "diag/DiagnosticsCenter.h"
+#include "diag/ObservableWPI.h"
+#undef NR_USE_WPILIB
+
+MotorPair::MotorPair( CANJaguar &fr, CANJaguar &rr, Encoder &e )
+:	front( fr ), rear( rr ),
+	encoder( 4, 1, 4, 2 )
+#ifdef NR_CLOSED_LOOP_CONTROL
+	,
+	frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, &encoder, &front ),
+	rearPID( kPIDProportional, kPIDIntegral, kPIDDifferential, &encoder, &rear )
+#endif
+{
+	front.SetSafetyEnabled( false );
+	rear.SetSafetyEnabled(  false );
+	
+	reversed = false;
+}
+
+MotorPair::MotorPair( UINT8 fr, UINT8 rr,
+		  UINT8 encoderSlot1, UINT8 encoderChannel1,
+		  UINT8 encoderSlot2, UINT8 encoderChannel2,
+		  CANJaguar::ControlMode controlMode )
+:	front( fr, controlMode ),
+	rear( rr, controlMode ),
+	encoder( encoderSlot1, encoderChannel1, encoderSlot2, encoderChannel2 )
+#ifdef NR_CLOSED_LOOP_CONTROL
+	,
+	frontPID( kPIDProportional, kPIDIntegral, kPIDDifferential, &encoder, &front ),
+	rearPID(  kPIDProportional, kPIDIntegral, kPIDDifferential, &encoder, &rear )
+#endif
+{
+	front.SetSafetyEnabled( false );
+	rear.SetSafetyEnabled(  false );
+
+	reversed = false;
+}
+
+void MotorPair::Set( float value )
+{
+#ifdef NR_CLOSED_LOOP_CONTROL
+	frontPID.Set( value * (reversed ? -1 : 1) );
+	rearPID.Set(  value * (reversed ? -1 : 1) );
+#else
+	front.Set( value * (reversed ? -1 : 1) );
+	rear.Set(  value * (reversed ? -1 : 1) );
+#endif
+}
+
+// Drive code starts here
 
 Drive :: Drive( CANJaguar frontRightMotor,
 				CANJaguar rearRightMotor,
@@ -13,14 +63,10 @@ Drive :: Drive( CANJaguar frontRightMotor,
 				CANJaguar rearLeftMotor,
 				Encoder leftEncoder,
 				Encoder rightEncoder )
-:	leftMotors(  frontLeftMotor,  rearLeftMotor  ),
-	rightMotors( frontRightMotor, rearRightMotor ),
-	encoderLeft( 4, 1, 4, 2 ), // FIXME: Use arguments
-	encoderRight( 4, 3, 4, 4 )
+:	leftMotors(  frontLeftMotor,  rearLeftMotor,  leftEncoder ),
+	rightMotors( frontRightMotor, rearRightMotor, rightEncoder )
 {
 	rightMotors.reversed = true;
-	encoderLeft.Start();
-	encoderRight.Start();
 	InitializeDiagnostics();
 }
 
@@ -33,14 +79,10 @@ Drive :: Drive( UINT8 frontRightMotor,
 			    UINT8 encoderRightSlot1, UINT8 encoderRightChannel1,
 			    UINT8 encoderRightSlot2, UINT8 encoderRightChannel2,
 			    CANJaguar::ControlMode controlMode )
-:	leftMotors(  frontLeftMotor,  rearLeftMotor,  controlMode ),
-	rightMotors( frontRightMotor, rearRightMotor, controlMode ),
-	encoderLeft( encoderLeftSlot1, encoderLeftChannel1, encoderLeftSlot2, encoderLeftChannel2 ),
-	encoderRight( encoderRightSlot1, encoderRightChannel1, encoderRightSlot2, encoderRightChannel2 )
+:	leftMotors(  frontLeftMotor,  rearLeftMotor,  encoderLeftSlot1,  encoderLeftChannel1,  encoderLeftSlot2,  encoderLeftChannel2,  controlMode ),
+	rightMotors( frontRightMotor, rearRightMotor, encoderRightSlot1, encoderRightChannel1, encoderRightSlot2, encoderRightChannel2, controlMode )
 {
 	rightMotors.reversed = true;
-	encoderLeft.Start();
-	encoderRight.Start();
 	InitializeDiagnostics();
 }
 
@@ -52,18 +94,13 @@ void Drive :: TankDrive( float left, float right )
 
 void Drive :: InitializeDiagnostics()
 {
-	nr::diag::diagnostics_center &diag = nr::diag::diagnostics_center::get_shared_instance();
-	
-	diag.register_device( new nr::diag::observable_speed_controller( leftMotors.front ), "Left Front Motor" );
-	diag.register_device( new nr::diag::observable_speed_controller( leftMotors.rear ), "Left Rear Motor" );
-	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.front ), "Right Front Motor" );
-	diag.register_device( new nr::diag::observable_speed_controller( rightMotors.rear ), "Right Rear Motor" );
+	nr::diag::DiagnosticsCenter &diag = nr::diag::SharedDiagnosticsCenter();
 
-	diag.register_device( new nr::diag::observable_jaguar_current( leftMotors.front ), "Left Front Current" );
-	diag.register_device( new nr::diag::observable_jaguar_current( leftMotors.rear ), "Left Rear Current" );
-	diag.register_device( new nr::diag::observable_jaguar_current( rightMotors.front ), "Right Front Current" );
-	diag.register_device( new nr::diag::observable_jaguar_current( rightMotors.rear ), "Right Rear Current" );
+	diag.RegisterDevice( leftMotors.front,  "Left Front Motor" );
+	diag.RegisterDevice( leftMotors.rear,   "Left Rear Motor" );
+	diag.RegisterDevice( rightMotors.front, "Right Front Motor" );
+	diag.RegisterDevice( rightMotors.rear,  "Right Rear Motor" );
 	
-	diag.register_device( new nr::diag::observable_encoder( encoderLeft ), "Left Encoder" );
-	diag.register_device( new nr::diag::observable_encoder( encoderRight ), "Right Encoder" );
+	diag.RegisterDevice( leftMotors.encoder,  "Left Encoder" );
+	diag.RegisterDevice( rightMotors.encoder, "Right Encoder" );
 }

@@ -1,5 +1,5 @@
 /*
- *  mutex.h
+ *  Mutex.h
  *  Nashoba Robotics 2011
  *
  *  Copyright 2010 RC Howe
@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include "thread_exception.h"
+#include "ThreadException.h"
 #include <pthread.h>
 
-#define SYNCHRONIZED(MUTEX) class nr::conc::mutex::lock MUTEX##_macro_lock = MUTEX;\
+#define SYNCHRONIZED(MUTEX) class nr::conc::Mutex::Lock MUTEX##_macro_lock = MUTEX;\
 	for ( ; (MUTEX##_macro_lock) ;\
-		MUTEX##_macro_lock.release() )
+		MUTEX##_macro_lock.Release() )
 
 namespace nr {
 	namespace conc
@@ -21,23 +21,23 @@ namespace nr {
 		/**
 		 *  @brief A class representing a mutex. This is an abstraction over a pthread_mutex
 		 */
-		class mutex
+		class Mutex
 		{
 		public:
 			/**
 			 * Creates a new mutex
 			 */
-			mutex() throw ( thread_exception );
+			Mutex() throw ( ThreadException );
 
 			/**
 			 * Destroys a mutex, unlocking if necessary
 			 */
-			~mutex() throw ();
+			~Mutex() throw ();
 
 			/**
 			 *  @brief A lock on a mutex, in an RAII-compatible fashion
 			 */
-			class lock
+			class Lock
 			{
 			public:
 				/**
@@ -45,12 +45,12 @@ namespace nr {
 				 *
 				 *	@param m The mutex to lock
 				 */
-				lock( mutex &m ) throw ( thread_exception );
+				Lock( Mutex &m ) throw ( ThreadException );
 
 				/**
 				 *  Destroys this lock, releasing the mutex if necessary
 				 */
-				~lock() throw ( thread_exception );
+				~Lock() throw ( ThreadException );
 
 				/**
 				 *	@return Whether or not the lock is locked
@@ -60,29 +60,29 @@ namespace nr {
 				/**
 				 *	Releases the lock on this mutex
 				 */
-				void release() throw ( thread_exception );
+				void Release() throw ( ThreadException );
 
 			private:
-				mutex &mut;
+				Mutex &mut;
 				bool locked;
 			};
 
 			/**
 			 *  Acquires a lock on the mutex
 			 */
-			void acquire() throw ( thread_exception );
+			void Acquire() throw ( ThreadException );
 
 			/**
 			 *  Releases an acquired lock on the mutex
 			 */
-			void release() throw ( thread_exception );
+			void Release() throw ( ThreadException );
 
 			/**
 			 *  Trys to lock the mutex
 			 *
 			 *  @return true if successfully locked, false otherwise
 			 */
-			bool trylock() throw ();
+			bool TryLock() throw ();
 
 		private:
 			pthread_mutex_t raw_mutex;

@@ -8,8 +8,11 @@
 
 #include "LineFollower.h"
 #include <cmath>
-#include "diag/diagnostics_center.h"
-#include "diag/observable_wpi.h"
+
+#define NR_USE_WPILIB
+#include "diag/DiagnosticsCenter.h"
+#include "diag/ObservableWPI.h"
+#undef NR_USE_WPILIB
 
 LineFollower :: LineFollower( UINT8 sensor1Channel,
 			  UINT8 sensor2Channel,
@@ -71,9 +74,4 @@ void LineFollower :: WaitUntilFacing( FieldSide side )
 
 void LineFollower :: InitializeDiagnostics()
 {
-	nr::diag::diagnostics_center &diag = nr::diag::diagnostics_center::get_shared_instance();
-
-	diag.register_device( new nr::diag::observable_digitalinput( sensor1 ), "Left Line Sensor" );
-	diag.register_device( new nr::diag::observable_digitalinput( sensor2 ), "Center Line Sensor" );
-	diag.register_device( new nr::diag::observable_digitalinput( sensor3 ), "Right Line Sensor" );
 }
