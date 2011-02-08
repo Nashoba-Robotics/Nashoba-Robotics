@@ -56,7 +56,7 @@ DiagnosticsCenter::DiagnosticsCenter() throw ()
 		thread.Start();
 	}
 
-	catch ( nr::conc::thread_exception &e ) {
+	catch ( nr::conc::ThreadException &e ) {
 		std::cerr << "Unable to start diagnostics center: " << e.what() << std::endl;
 		running = false;
 	}

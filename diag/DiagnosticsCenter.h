@@ -41,7 +41,7 @@ namespace nr{
 		 *	from `observable'. Wrappers for common WPILib classes are available in the
 		 *	ObservableWPI.h header.
 		 */
-		class DiagnosticsCenter : private nr::conc::thread::entry
+		class DiagnosticsCenter : private nr::conc::Thread::Entry
 		{
 		public:
 			/**
@@ -72,11 +72,11 @@ namespace nr{
 
 		private:
 			std::vector<Observable*> devices;
-			nr::conc::mutex devices_mutex;
+			nr::conc::Mutex devices_mutex;
 
 			// Threading Stuff
 			void Run( void *userinfo = NULL ) throw ();
-			nr::conc::thread thread;
+			nr::conc::Thread thread;
 			bool running;
 
 			// Constructors and destructors
