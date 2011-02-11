@@ -13,7 +13,7 @@
 
 using namespace nr::diag;
 
-observable_speed_controller::observable_speed_controller( const SpeedController &d ) throw ()
+observable_speed_controller::observable_speed_controller( SpeedController &d ) throw ()
 :	device( d )
 {
 }

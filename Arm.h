@@ -29,6 +29,13 @@ public:
 	* @brief Moves the lower arm to the given position.
 	* @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
 	*/
+	
+	/**
+	 * @brief simple lower arm function
+	 */
+	
+	void SimpleUpperArm (float value);
+	
 	void SetLowerArm( bool position );
 	
 	/**

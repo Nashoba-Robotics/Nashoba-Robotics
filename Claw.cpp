@@ -16,13 +16,7 @@ clawServoBottom1( 3 ),
 clawServoBottom2( 4 ),
 claw_control_thread(new nr::conc::thread::function_entry( Claw::claw_servo_stop ) )
 {
-	// Add the servos to the diagnostics center
-	nr::diag::diagnostics_center &diag = nr::diag::diagnostics_center::get_shared_instance();
-	
-	diag.register_device( new nr::diag::observable_servo( clawServoTop1 ), "Top Claw Servo 1" );
-	diag.register_device( new nr::diag::observable_servo( clawServoTop2 ), "Top Claw Servo 2" );
-	diag.register_device( new nr::diag::observable_servo( clawServoBottom1 ), "Bottom Claw Servo 1" );
-	diag.register_device( new nr::diag::observable_servo( clawServoBottom2 ), "Bottom Claw Servo 2" );
+
 };
 
 void Claw::claw_servo_stop( void *object)

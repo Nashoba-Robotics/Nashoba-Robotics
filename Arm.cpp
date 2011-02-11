@@ -35,7 +35,7 @@ void Arm::control_arm_motor( void *object )
  * constructor for arm class
  */
 Arm::Arm():
-	armMotor( 4 ),
+	armMotor( 5 ),
 	armSolenoidRaise( 1 ),
 	armSolenoidLower( 2 ),
 	armEncoder( 4,5 ),
@@ -68,6 +68,11 @@ void Arm::SetLowerArm( bool position )
 		armSolenoidRaise.Set( false );
 		lowerArm=false;
 	}
+}
+
+void Arm::SimpleUpperArm (float value)
+{
+	armMotor.Set(value);
 }
 
 void Arm::SetUpperArm( double angle )
