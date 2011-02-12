@@ -6,7 +6,7 @@
  */
 
 #include "Claw.h"
-#include "diag/diagnostics_center.h"
+#include "diag/DiagnosticsCenter.h"
 
 
 Claw::Claw():
@@ -14,9 +14,8 @@ clawServoTop4( 4 ),
 clawServoTop3 ( 3 ),
 clawServoBottom1( 5 ),
 clawServoBottom2( 6 ),
-claw_control_thread(new nr::conc::thread::function_entry( Claw::claw_servo_stop ) )
+claw_control_thread(new nr::conc::Thread::FunctionEntry( Claw::claw_servo_stop ) )
 {
-	
 };
 
 void Claw::claw_servo_stop( void *object)
@@ -40,8 +39,7 @@ void Claw::claw_servo_stop( void *object)
 
 void Claw::Grab()
 {
-
-	if ( ! claw_control_mutex.trylock() )
+	if ( ! claw_control_mutex.TryLock() )
 	{
 		claw_control_thread.Stop();
 	}
@@ -57,7 +55,7 @@ void Claw::Grab()
 //TODO: REAL VALUES
 void Claw::Release()
 {
-	if ( ! claw_control_mutex.trylock() )
+	if ( ! claw_control_mutex.TryLock() )
 	{
 		claw_control_thread.Stop();
 	}
@@ -71,7 +69,7 @@ void Claw::Release()
 
 void Claw::RotateUp()
 {
-		if ( ! claw_control_mutex.trylock() )
+		if ( ! claw_control_mutex.TryLock() )
 		{
 			claw_control_thread.Stop();
 		}
@@ -86,7 +84,7 @@ void Claw::RotateUp()
 
 void Claw::RotateDown()
 {
-		if ( ! claw_control_mutex.trylock() )
+		if ( ! claw_control_mutex.TryLock() )
 		{
 			claw_control_thread.Stop();
 		}

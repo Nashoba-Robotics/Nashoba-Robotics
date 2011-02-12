@@ -6,7 +6,7 @@
  */
 
 #include "Arm.h"
-#include "diag/diagnostics_center.h"
+#include "diag/DiagnosticsCenter.h"
 #include <math.h>
 
 /**
@@ -39,14 +39,14 @@ Arm::Arm():
 	armSolenoidRaise( 1 ),
 	armSolenoidLower( 2 ),
 	armEncoder( 9,10 ),
-	arm_control_thread(new nr::conc::thread::function_entry( Arm::control_arm_motor ) )
+	arm_control_thread(new nr::conc::Thread::FunctionEntry( Arm::control_arm_motor ) )
 
 {
 	lowerArm = false;
 	armEncoder.Start();
-	nr::diag::diagnostics_center& diag = nr::diag::diagnostics_center::get_shared_instance();
-	diag.register_device( new nr::diag::observable_speed_controller( armMotor ), "Arm Motor" );
-	diag.register_device( new nr::diag::observable_encoder( armEncoder ), "Arm Encoder" );
+	nr::diag::DiagnosticsCenter& diag = nr::diag::SharedDiagnosticsCenter();
+	diag.RegisterDevice( armMotor, "Arm Motor" );
+	diag.RegisterDevice( armEncoder, "Arm Encoder" );
 }
 /**
  * This function sets the lower arm to a boolean position value:true corresponds to raised and false corresponds to lower
@@ -59,20 +59,20 @@ void Arm::SetLowerArm( bool position )
 		//fires the arm solenoid
 		armSolenoidRaise.Set( true );
 		armSolenoidLower.Set( false );
-		lowerArm=true;
+		lowerArm = true;
 	}
 
 	else if ( lowerArm && ! position )
 	{
 		armSolenoidLower.Set( true );
 		armSolenoidRaise.Set( false );
-		lowerArm=false;
+		lowerArm = false;
 	}
 }
 
-void Arm::SimpleUpperArm (float value)
+void Arm::SimpleUpperArm( float value )
 {
-	armMotor.Set(value);
+	armMotor.Set( value );
 }
 
 void Arm::SetUpperArm( double angle )

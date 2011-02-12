@@ -9,9 +9,9 @@
 #define ARM_H_
 
 #include "WPILib.h"
-#include "conc/thread.h"
-#include "conc/mutex.h"
-#include "diag/observable_wpi.h"
+#include "conc/Thread.h"
+#include "conc/Mutex.h"
+#include "diag/ObservableWPI.h"
 
 /**
 * @brief Class that controls the upper and lower arms. 
@@ -26,22 +26,19 @@ public:
 	Arm();
 
 	/**
-	* @brief Moves the lower arm to the given position.
-	* @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
-	*/
-	
-	/**
 	 * @brief simple lower arm function
 	 */
-	
 	void SimpleUpperArm (float value);
 	
+	/**
+	 * @brief Moves the lower arm to the given position.
+	 * @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
+	 */
 	void SetLowerArm( bool position );
 	
 	/**
 	* @brief Returns the current angle of the upper arm
 	*/
-
 	double GetTilt();
 	
 	/**
@@ -61,8 +58,8 @@ private:
 	Solenoid armSolenoidRaise;
 	Solenoid armSolenoidLower;
 	Encoder armEncoder;
-	nr::conc::thread arm_control_thread;
-	nr::conc::mutex arm_control_mutex;
+	nr::conc::Thread arm_control_thread;
+	nr::conc::Mutex arm_control_mutex;
 	// TODO: Determine this value
 	static const float kCloseEnough = 5.0;
 	static void control_arm_motor ( void* );

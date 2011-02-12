@@ -11,11 +11,11 @@
 
 #include "WPILib.h"
 
-#include "conc/thread.h"
+#include "conc/Thread.h"
 #include "Claw.h"
 #include "Arm.h"
 
-class Manipulator : public nr::conc::thread::entry
+class Manipulator : public nr::conc::Thread::Entry
 {
 public:
 	/**
@@ -23,7 +23,6 @@ public:
 	 * @param joy The joystick to dedicate to the manipulator
 	 */
 	Manipulator( Joystick &joy );
-
 
 	/**
 	 * The thread entry function
