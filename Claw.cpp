@@ -8,15 +8,15 @@
 #include "Claw.h"
 #include "diag/diagnostics_center.h"
 
-//needs port numbers
+
 Claw::Claw():
-clawServoTop1( 1 ),
-clawServoTop2 (2),
-clawServoBottom1( 3 ),
-clawServoBottom2( 4 ),
+clawServoTop4( 4 ),
+clawServoTop3 ( 3 ),
+clawServoBottom1( 5 ),
+clawServoBottom2( 6 ),
 claw_control_thread(new nr::conc::thread::function_entry( Claw::claw_servo_stop ) )
 {
-
+	
 };
 
 void Claw::claw_servo_stop( void *object)
@@ -24,15 +24,17 @@ void Claw::claw_servo_stop( void *object)
 
 	Claw *instance = (Claw *) object;
 	
-	Wait( 2.0f );
-	instance->clawServoTop1.Set( 176 );
-	instance->clawServoTop2.Set( 176 );
-	instance->clawServoBottom1.Set( 176 );
-	instance->clawServoBottom2.Set( 176 );
+	Wait( instance->time );
+	instance->clawServoTop4.SetRaw( 0 );
+	instance->clawServoTop3.SetRaw( 0 );
+	instance->clawServoBottom1.SetRaw( 0 );
+	instance->clawServoBottom2.SetRaw( 0 );
 }
 
 
 //pulls both motors in
+
+
 
 //TODO: Real times and motor speeds
 
@@ -44,10 +46,11 @@ void Claw::Grab()
 		claw_control_thread.Stop();
 	}
 	claw_control_thread.Start( (void *) this );
-	clawServoTop1.Set( 0 );
-	clawServoTop2.Set( 0 );
-	clawServoBottom1.Set( 255 );
-	clawServoBottom2.Set(255);
+	clawServoTop4.SetRaw( 1 );
+	clawServoTop3.SetRaw( 255 );
+	clawServoBottom1.SetRaw( 255 );
+	clawServoBottom2.SetRaw( 1 );
+	time=1.4;
 }
 
 //pushes the tube out, with the top motor faster to change orientation
@@ -59,10 +62,11 @@ void Claw::Release()
 		claw_control_thread.Stop();
 	}
 	claw_control_thread.Start( (void *) this );
-	clawServoTop1.Set( 256 );
-	clawServoTop2.Set( 256 );
-	clawServoBottom1.Set( 0 );
-	clawServoBottom2.Set( 0 );
+	clawServoTop4.SetRaw( 255 );
+	clawServoTop3.SetRaw( 1 );
+	clawServoBottom1.SetRaw( 1 );
+	clawServoBottom2.SetRaw( 255 );
+	time=2.0;
 }
 
 void Claw::RotateUp()
@@ -72,11 +76,12 @@ void Claw::RotateUp()
 			claw_control_thread.Stop();
 		}
 		claw_control_thread.Start( (void *) this );
-		clawServoTop1.Set( 0 );
-		clawServoTop2.Set( 0 );
+		clawServoTop4.SetRaw( 1 );
+		clawServoTop3.SetRaw( 255 );
 		
-		clawServoBottom1.Set( 0 );
-		clawServoBottom2.Set( 0 );
+		clawServoBottom1.SetRaw( 1 );
+		clawServoBottom2.SetRaw( 255 );
+		time=1.0;
 }
 
 void Claw::RotateDown()
@@ -86,9 +91,11 @@ void Claw::RotateDown()
 			claw_control_thread.Stop();
 		}
 		claw_control_thread.Start( (void *) this );
-		clawServoTop1.Set( 256 );
-		clawServoTop2.Set( 256 );
-		clawServoBottom1.Set( 256 );
-		clawServoBottom2.Set( 256 );
+		clawServoTop4.SetRaw( 255 );
+		clawServoTop3.SetRaw( 1 );
+		clawServoBottom1.SetRaw( 255 );
+		clawServoBottom2.SetRaw( 1 );
+		time=1.0;
 
 }
+

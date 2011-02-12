@@ -24,6 +24,7 @@ public:
 	 */
 	Manipulator( Joystick &joy );
 
+
 	/**
 	 * The thread entry function
 	 */
@@ -34,6 +35,7 @@ private:
 	Arm arm;
 	Joystick &joystick;
 
+	
 	//TODO: fix angle ratio to correspond to actual geometry
 	const static double kAngleRatio = 1.0;
 };

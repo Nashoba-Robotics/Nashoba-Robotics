@@ -19,6 +19,8 @@
 class Claw
 {
 public:
+	
+	
 	/**
 	* @brief Constructs an instance of the claw class.
 	*/
@@ -43,14 +45,18 @@ public:
 	* @brief Rotates the game piece below the claw.
 	*/
 	void RotateDown();
-private:
-	Servo clawServoTop1;
-	Servo clawServoTop2;
+		
+
+	Servo clawServoTop4;
+	Servo clawServoTop3;
 	Servo clawServoBottom1;
 	Servo clawServoBottom2;
+	
+private:
 	nr::conc::thread claw_control_thread;
 	nr::conc::mutex claw_control_mutex;
 	static void claw_servo_stop( void* );
+	float time;
 };
 
 #endif /* CLAW_H_ */
