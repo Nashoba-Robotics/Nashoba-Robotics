@@ -78,7 +78,7 @@ void Arm::SimpleUpperArm( float value )
 void Arm::SetUpperArm( double angle )
 {
 	// TODO: Constants and real angle factors
-	if ( ! arm_control_mutex.trylock() )
+	if ( ! arm_control_mutex.TryLock() )
 	{
 		arm_control_thread.Stop();
 	}
