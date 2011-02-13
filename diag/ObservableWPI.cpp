@@ -57,4 +57,12 @@ ObservableJaguarCurrent::ObservableJaguarCurrent( CANJaguar &j ) throw ()
 {
 }
 
+const std::string ObservableJaguarCurrent::Value() throw ()
+{
+	char out[10];
+	::snprintf( out, sizeof out, "%2f", device.GetOutputCurrent() );
+	
+	return std::string( out );
+}
+
 #endif
