@@ -24,7 +24,7 @@ namespace nr {
 			 *	Creates a new observable speed controller
 			 *	@param The speed controller to observe
 			 */
-			observable_speed_controller( const SpeedController& ) throw ();
+			observable_speed_controller( SpeedController& ) throw ();
 			
 			/**
 			 *	Gets the value from the speed controller

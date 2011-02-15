@@ -53,18 +53,17 @@ public:
 	/*
 	* @brief The current position of the lower arm 
 	*/
-	bool lowerArm;
-
-private:
-	double upperArmAngle;
-	CANJaguar armMotor;
+	int encoderValue;
+	Encoder armEncoder;
 	Solenoid armSolenoidRaise;
 	Solenoid armSolenoidLower;
-	Encoder armEncoder;
+	CANJaguar armMotor;	
+private:
+	double upperArmAngle;
 	nr::conc::thread arm_control_thread;
 	nr::conc::mutex arm_control_mutex;
 	// TODO: Determine this value
-	static const float kCloseEnough = 5.0;
+	static const float kCloseEnough = 7.0;
 	static void control_arm_motor ( void* );
 	volatile double arm_control_angle;
 };

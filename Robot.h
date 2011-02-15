@@ -11,6 +11,8 @@
 #include "WPILib.h"
 #include "Drive.h"
 #include "LineFollower.h"
+#include "Manipulator.h"
+#include "conc/thread.h"
 
 /**
  *	\brief The robot class
@@ -25,7 +27,9 @@ public:
 	 */
 	Robot( void );
 	
-	/**
+	Compressor compressor;
+	//Relay relay;
+	/** 	
 	 *	\brief The autonomous mode entry
 	 *	When autonomous mode starts, this method is called
 	 */
@@ -39,7 +43,10 @@ public:
 	
 private:
 	Joystick joy1, joy2;
+	Joystick manipulatorJoystick;
 	Drive drive;
+	Manipulator manipulator;
+	nr::conc::thread manipulatorThread;
 	
 	LineFollower lineFollower;
 	
@@ -47,4 +54,4 @@ private:
 	static const float kMainRunLoopDelta = 0.05;
 };
 
-START_ROBOT_CLASS(Robot);
+ START_ROBOT_CLASS(Robot);

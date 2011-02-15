@@ -21,10 +21,13 @@ void Manipulator::Run( void* ) throw ()
 	//claw.Grab();
 	//claw.ClawTest();
 
-	while ( /*IsOperatorControl()*/ true )
+	while ( RobotBase::getInstance().IsOperatorControl() )
 	{
 
-		arm.SimpleUpperArm( joystick.GetY() );
+		if (joystick.GetRawButton(8))
+		{
+			arm.SimpleUpperArm( joystick.GetY() );
+		}
 		if (joystick.GetRawButton(2))
 		{
 			claw.Grab();
@@ -37,10 +40,42 @@ void Manipulator::Run( void* ) throw ()
 		{
 			claw.RotateUp();
 		}
-		if (joystick.GetRawButton(6))
+		if (joystick.GetRawButton(4))
 		{
 			claw.RotateDown();
 		}
+		
+		if (joystick.GetRawButton(5))
+		{
+			arm.SetLowerArm(true);
+		}
+		if (joystick.GetRawButton(6))
+		{
+			arm.SetLowerArm(false);
+		}
+		if (joystick.GetRawButton(10))
+		{
+			arm.SetLowerArm(true);
+			arm.SetUpperArm(-1953);
+		}
+		if (joystick.GetRawButton(7))
+		{
+			arm.SetLowerArm(false);
+			arm.SetUpperArm(-800);
+		}
+		if(joystick.GetRawButton(11))
+		{
+			arm.SetLowerArm(false);
+			arm.SetUpperArm(-50);
+		}
+		if (joystick.GetRawButton(9))
+		{
+			GoDown();
+		}
+		arm.encoderValue = arm.armEncoder.Get();
+		
+		printf("%d\n", arm.encoderValue);
+		
 		/*
 		/*	
 		claw.clawServoBottom1.SetRaw(0);
@@ -98,8 +133,16 @@ void Manipulator::Run( void* ) throw ()
 		dashboard.AddFloat(1.0f-((joystick.GetX())+1.0f)/2.0f);
 		dashboard.AddFloat(1.0f-((joystick.GetY())+1.0f)/2.0f);
 		*/
+		//printf("%x\n",arm.armSolenoidRaise.GetAll());
+		printf("%f",arm.armMotor.Get());
+		Wait(0.05);
 	}
 }
 
-
+void Manipulator::GoDown()
+{
+	arm.SetLowerArm(false);
+	Wait(1.5f);
+	arm.SetUpperArm(-70);
+}
 

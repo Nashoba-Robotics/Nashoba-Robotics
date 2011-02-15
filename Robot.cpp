@@ -7,14 +7,22 @@
  */
 
 #include "Robot.h"
- 
+
 Robot :: Robot( void )
 :	joy1( 1 ), joy2( 2 ),
+ 	manipulatorJoystick( 3 ),
 	drive( 1, 2, 3, 4, 4, 4, 4, 5, 4, 6, 4, 7 ),
-	lineFollower( 1, 2, 3, 4 ) // FIXME: Not actual #s
+	manipulator( manipulatorJoystick ),
+	lineFollower( 1, 2, 3, 4 ),
+	manipulatorThread( &manipulator ),
+	//relay(4,2,Relay::kForwardOnly)
+	compressor(4, 12, 4, 2)
 {
+	manipulatorThread.Start();
+	compressor.Start();
+	//relay.Set(Relay::kOn);
 }
-
+	
 void Robot :: Autonomous( void )
 {
 	GetWatchdog().SetEnabled( false );
@@ -52,6 +60,9 @@ void Robot :: OperatorControl( void )
 	while ( IsOperatorControl() )
 	{
 		drive.TankDrive( joy1.GetY(), joy2.GetY() );
+		//printf( "%d", compressor.GetPressureSwitchValue());
+
 		Wait( kMainRunLoopDelta );
+		
 	}
 }

@@ -50,7 +50,7 @@ void Claw::Grab()
 	clawServoTop3.SetRaw( 255 );
 	clawServoBottom1.SetRaw( 255 );
 	clawServoBottom2.SetRaw( 1 );
-	time=1.4;
+	time=0.2;
 }
 
 //pushes the tube out, with the top motor faster to change orientation
@@ -81,7 +81,7 @@ void Claw::RotateUp()
 		
 		clawServoBottom1.SetRaw( 1 );
 		clawServoBottom2.SetRaw( 255 );
-		time=1.0;
+		time=0.2;
 }
 
 void Claw::RotateDown()
@@ -95,7 +95,7 @@ void Claw::RotateDown()
 		clawServoTop3.SetRaw( 1 );
 		clawServoBottom1.SetRaw( 255 );
 		clawServoBottom2.SetRaw( 1 );
-		time=1.0;
+		time=0.2;
 
 }
 

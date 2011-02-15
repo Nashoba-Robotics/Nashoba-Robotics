@@ -35,7 +35,7 @@ private:
 	Arm arm;
 	Joystick &joystick;
 
-	
+	void GoDown();
 	//TODO: fix angle ratio to correspond to actual geometry
 	const static double kAngleRatio = 1.0;
 };
