@@ -42,6 +42,7 @@ private:
 	Drive drive;
 	
 	LineFollower lineFollower;
+	Ultrasonic ultrasonic;
 	
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;
