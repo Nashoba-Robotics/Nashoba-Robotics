@@ -26,19 +26,22 @@ public:
 	Arm();
 
 	/**
-	 * @brief simple lower arm function
-	 */
-	void SimpleUpperArm (float value);
+	* @brief Moves the lower arm to the given position.
+	* @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
+	*/
 	
 	/**
-	 * @brief Moves the lower arm to the given position.
-	 * @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
+	 * @brief simple lower arm function
 	 */
+	
+	void SimpleUpperArm (float value);
+	
 	void SetLowerArm( bool position );
 	
 	/**
 	* @brief Returns the current angle of the upper arm
 	*/
+
 	double GetTilt();
 	
 	/**
@@ -50,18 +53,17 @@ public:
 	/*
 	* @brief The current position of the lower arm 
 	*/
-	bool lowerArm;
-
-private:
-	double upperArmAngle;
-	CANJaguar armMotor;
+	int encoderValue;
+	Encoder armEncoder;
 	Solenoid armSolenoidRaise;
 	Solenoid armSolenoidLower;
-	Encoder armEncoder;
+	CANJaguar armMotor;	
+private:
+	double upperArmAngle;
 	nr::conc::Thread arm_control_thread;
 	nr::conc::Mutex arm_control_mutex;
 	// TODO: Determine this value
-	static const float kCloseEnough = 5.0;
+	static const float kCloseEnough = 7.0;
 	static void control_arm_motor ( void* );
 	volatile double arm_control_angle;
 };

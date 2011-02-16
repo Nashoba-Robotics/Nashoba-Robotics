@@ -17,14 +17,34 @@ void Arm::control_arm_motor( void *object )
 {
 	Arm *instance = (Arm *) object;
 	instance->upperArmAngle = instance->GetTilt();
-
 	// Runs when the difference in angles is large enough
 	//TODO: fix kCloseEnough with real value
-	while ( fabs( instance->upperArmAngle - instance->arm_control_angle ) < kCloseEnough )
+	while ( fabs( instance->upperArmAngle - instance->arm_control_angle ) > kCloseEnough )
 	{
 
 		instance->upperArmAngle = instance->GetTilt();
-		instance->armMotor.Set( ( instance->arm_control_angle - instance->upperArmAngle ) / 500.0 );
+		if (((instance->upperArmAngle-instance->arm_control_angle ) / 1000 < 0.2) && ((instance->upperArmAngle-instance->arm_control_angle ) / 2000 > 0) )
+		{
+			instance->armMotor.Set(0.5);
+		}
+		else if (((instance->upperArmAngle-instance->arm_control_angle ) / 1000 > -0.2) && ((instance->upperArmAngle-instance->arm_control_angle ) / 2000 < 0) )
+		{
+					instance->armMotor.Set(-0.4);
+		}
+		else if ((instance->upperArmAngle-instance->arm_control_angle ) / 1000 >= 1.0 )
+		{
+			instance->armMotor.Set(1.0);
+		}
+		else if ((instance->upperArmAngle-instance->arm_control_angle ) / 1000 <= -1.0 )
+		{
+			instance->armMotor.Set(-1.0);
+		}
+		else
+		{
+		instance->armMotor.Set( ( instance->upperArmAngle-instance->arm_control_angle ) / 1000 );
+		}
+		Wait( 0.05 );		
+
 	}
 
 	instance->armMotor.Set( 0.0 );
@@ -35,14 +55,12 @@ void Arm::control_arm_motor( void *object )
  * @brief Constructor for arm class
  */
 Arm::Arm():
-	armMotor( 5 ),
-	armSolenoidRaise( 1 ),
-	armSolenoidLower( 2 ),
 	armEncoder( 9,10 ),
-	arm_control_thread(new nr::conc::Thread::FunctionEntry( Arm::control_arm_motor ) )
-
+	armSolenoidRaise( 7, 2 ),
+	armSolenoidLower( 7, 1 ),
+	arm_control_thread(new nr::conc::Thread::FunctionEntry( Arm::control_arm_motor ) ),
+	armMotor( 5 )
 {
-	lowerArm = false;
 	armEncoder.Start();
 	nr::diag::DiagnosticsCenter& diag = nr::diag::SharedDiagnosticsCenter();
 	diag.RegisterDevice( armMotor, "Arm Motor" );
@@ -54,25 +72,24 @@ Arm::Arm():
 void Arm::SetLowerArm( bool position )
 {
 
-	if ( (! lowerArm && position) )
+	if ( position )
 	{
 		//fires the arm solenoid
 		armSolenoidRaise.Set( true );
 		armSolenoidLower.Set( false );
-		lowerArm = true;
 	}
 
-	else if ( lowerArm && ! position )
+	else if ( ! position )
 	{
 		armSolenoidLower.Set( true );
 		armSolenoidRaise.Set( false );
-		lowerArm = false;
+		//printf("going down");
 	}
 }
 
-void Arm::SimpleUpperArm( float value )
+void Arm::SimpleUpperArm (float value)
 {
-	armMotor.Set( value );
+	armMotor.Set(value);
 }
 
 void Arm::SetUpperArm( double angle )
@@ -82,8 +99,8 @@ void Arm::SetUpperArm( double angle )
 	{
 		arm_control_thread.Stop();
 	}
-	arm_control_thread.Start( (void *) this );
 	arm_control_angle = angle;
+	arm_control_thread.Start( (void *) this );
 }
 
 // TODO: fix this for real values with actual correction value

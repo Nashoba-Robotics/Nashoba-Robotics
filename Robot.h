@@ -11,6 +11,7 @@
 #include "WPILib.h"
 #include "Drive.h"
 #include "LineFollower.h"
+#include "Manipulator.h"
 
 /**
  *	\brief The robot class
@@ -38,10 +39,12 @@ public:
 	void OperatorControl( void );
 	
 private:
-	Joystick joy1, joy2;
+	Joystick joy1, joy2, manipulatorJoystick;
 	Drive drive;
 	
 	LineFollower lineFollower;
+	
+	Manipulator manipulator;
 	
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;

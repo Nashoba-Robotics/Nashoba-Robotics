@@ -16,6 +16,7 @@ clawServoBottom1( 5 ),
 clawServoBottom2( 6 ),
 claw_control_thread(new nr::conc::Thread::FunctionEntry( Claw::claw_servo_stop ) )
 {
+	
 };
 
 void Claw::claw_servo_stop( void *object)
@@ -39,6 +40,7 @@ void Claw::claw_servo_stop( void *object)
 
 void Claw::Grab()
 {
+
 	if ( ! claw_control_mutex.TryLock() )
 	{
 		claw_control_thread.Stop();
@@ -48,7 +50,7 @@ void Claw::Grab()
 	clawServoTop3.SetRaw( 255 );
 	clawServoBottom1.SetRaw( 255 );
 	clawServoBottom2.SetRaw( 1 );
-	time=1.4;
+	time=0.2;
 }
 
 //pushes the tube out, with the top motor faster to change orientation
@@ -79,7 +81,7 @@ void Claw::RotateUp()
 		
 		clawServoBottom1.SetRaw( 1 );
 		clawServoBottom2.SetRaw( 255 );
-		time=1.0;
+		time=0.2;
 }
 
 void Claw::RotateDown()
@@ -93,7 +95,7 @@ void Claw::RotateDown()
 		clawServoTop3.SetRaw( 1 );
 		clawServoBottom1.SetRaw( 255 );
 		clawServoBottom2.SetRaw( 1 );
-		time=1.0;
+		time=0.2;
 
 }
 

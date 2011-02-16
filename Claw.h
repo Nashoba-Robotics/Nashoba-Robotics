@@ -9,8 +9,8 @@
 #define CLAW_H_
 
 #include "WPILib.h"
-#include "conc/Thread.h"
-#include "conc/Mutex.h"
+#include "conc/thread.h"
+#include "conc/mutex.h"
 #include "diag/ObservableWPI.h"
 /**
 * @brief Class that controls the claw and gripper
@@ -19,6 +19,8 @@
 class Claw
 {
 public:
+	
+	
 	/**
 	* @brief Constructs an instance of the claw class.
 	*/

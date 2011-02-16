@@ -10,8 +10,10 @@
  
 Robot :: Robot( void )
 :	joy1( 1 ), joy2( 2 ),
+	manipulatorJoystick( 3 ),
 	drive( 1, 2, 3, 4, 4, 4, 4, 5, 4, 6, 4, 7 ),
-	lineFollower( 1, 2, 3, 4, 4, 14, 4, 13 ) // FIXME: Not actual #s
+	lineFollower( 1, 2, 3, 4, 4, 14, 4, 13 ),
+	manipulator( manipulatorJoystick )
 {
 }
 
