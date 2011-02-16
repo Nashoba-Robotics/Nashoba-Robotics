@@ -33,3 +33,8 @@ follows:
 
 <script src="http://gist.github.com/608688.js"> </script>
 
+Build Environment
+=================
+
+[cb8a82](https://github.com/Nashoba-Robotics/Nashoba-Robotics/commit/cb8a82474e66d344a5c97276629c887c07193a06) in the closed loop branch enables the following macros:
+NR_CLOSED_LOOP_CONTROL - Switches drive code to closed loop control when set.

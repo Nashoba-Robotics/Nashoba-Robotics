@@ -1,0 +1,71 @@
+/*
+ * Arm.h
+ *
+ *  Created on: Jan 13, 2011
+ *      Author: Nick Alberts
+ */
+
+#ifndef ARM_H_
+#define ARM_H_
+
+#include "WPILib.h"
+#include "conc/thread.h"
+#include "conc/mutex.h"
+#include "diag/observable_wpi.h"
+
+/**
+* @brief Class that controls the upper and lower arms. 
+*/
+
+class Arm
+{
+public:
+	/**
+	* @brief Constructs an instance of the arm class.
+	*/
+	Arm();
+
+	/**
+	* @brief Moves the lower arm to the given position.
+	* @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
+	*/
+	
+	/**
+	 * @brief simple lower arm function
+	 */
+	
+	void SimpleUpperArm (float value);
+	
+	void SetLowerArm( bool position );
+	
+	/**
+	* @brief Returns the current angle of the upper arm
+	*/
+
+	double GetTilt();
+	
+	/**
+	* @brief Begins to move the upper arm to the desired angle.
+	* @param angle The desired angle of the upper arm
+	*/
+	void SetUpperArm( double angle );
+	
+	/*
+	* @brief The current position of the lower arm 
+	*/
+	int encoderValue;
+	Encoder armEncoder;
+	Solenoid armSolenoidRaise;
+	Solenoid armSolenoidLower;
+	CANJaguar armMotor;	
+private:
+	double upperArmAngle;
+	nr::conc::thread arm_control_thread;
+	nr::conc::mutex arm_control_mutex;
+	// TODO: Determine this value
+	static const float kCloseEnough = 7.0;
+	static void control_arm_motor ( void* );
+	volatile double arm_control_angle;
+};
+
+#endif /* ARM_H_ */
