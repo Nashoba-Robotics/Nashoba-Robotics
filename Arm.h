@@ -24,18 +24,17 @@ public:
 	* @brief Constructs an instance of the arm class.
 	*/
 	Arm();
-
-	/**
-	* @brief Moves the lower arm to the given position.
-	* @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
-	*/
 	
 	/**
 	 * @brief simple lower arm function
 	 */
 	
 	void SimpleUpperArm (float value);
-	
+
+	/**
+	* @brief Moves the lower arm to the given position.
+	* @param position The desired position of the lower arm, where true corresponds to raiseed and false corresponds to lowered.
+	*/
 	void SetLowerArm( bool position );
 	
 	/**
@@ -57,7 +56,16 @@ public:
 	Encoder armEncoder;
 	Solenoid armSolenoidRaise;
 	Solenoid armSolenoidLower;
-	CANJaguar armMotor;	
+	CANJaguar armMotor;
+	
+	// Constants
+	static const double kTopMiddleRung		= -1800.0;
+	static const double kTopSideRung		= -1953.0;
+	static const double kCenterMiddleRung	= -2148.0;
+	static const double kCenterSideRung		= -2275.0;
+	static const double kBottomMiddleRung	= -721.0;
+	static const double kBottomSideRung		= -880.0;
+	
 private:
 	double upperArmAngle;
 	nr::conc::Thread arm_control_thread;
