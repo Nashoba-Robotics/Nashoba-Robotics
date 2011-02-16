@@ -50,6 +50,7 @@ private:
 	
 	LineFollower lineFollower;
 	
+	DigitalOutput ultrasonic;
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;
 };

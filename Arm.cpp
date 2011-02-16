@@ -43,7 +43,6 @@ void Arm::control_arm_motor( void *object )
 		{
 		instance->armMotor.Set( ( instance->upperArmAngle-instance->arm_control_angle ) / 1000 );
 		}
-		printf( "%f", instance->arm_control_angle );
 		Wait( 0.05 );		
 
 	}

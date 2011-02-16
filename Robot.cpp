@@ -16,10 +16,13 @@ Robot :: Robot( void )
 	lineFollower( 1, 2, 3, 4 ),
 	manipulatorThread( &manipulator ),
 	//relay(4,2,Relay::kForwardOnly)
-	compressor(4, 12, 4, 2)
-{
+	compressor(4, 12, 4, 2),
+	ultrasonic(13)
+
+	{
 	manipulatorThread.Start();
 	compressor.Start();
+	//ultrasonic.SetEnabled(true);
 	//relay.Set(Relay::kOn);
 }
 	
@@ -61,7 +64,10 @@ void Robot :: OperatorControl( void )
 	{
 		drive.TankDrive( joy1.GetY(), joy2.GetY() );
 		//printf( "%d", compressor.GetPressureSwitchValue());
-
+		//printf("%f\n",ultrasonic.GetRangeInches());
+		//ultrasonic.Ping();
+		GetWatchdog().Feed();
+		ultrasonic.Pulse(.001);
 		Wait( kMainRunLoopDelta );
 		
 	}

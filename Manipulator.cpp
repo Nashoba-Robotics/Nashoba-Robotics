@@ -44,7 +44,6 @@ void Manipulator::Run( void* ) throw ()
 		{
 			claw.RotateDown();
 		}
-		
 		if (joystick.GetRawButton(5))
 		{
 			arm.SetLowerArm(true);
@@ -73,8 +72,6 @@ void Manipulator::Run( void* ) throw ()
 			GoDown();
 		}
 		arm.encoderValue = arm.armEncoder.Get();
-		
-		printf("%d\n", arm.encoderValue);
 		
 		/*
 		/*	
