@@ -9,9 +9,9 @@
 #define ARM_H_
 
 #include "WPILib.h"
-#include "conc/thread.h"
-#include "conc/mutex.h"
-#include "diag/observable_wpi.h"
+#include "conc/Thread.h"
+#include "conc/Mutex.h"
+#include "diag/ObservableWPI.h"
 
 /**
 * @brief Class that controls the upper and lower arms. 
@@ -60,8 +60,8 @@ public:
 	CANJaguar armMotor;	
 private:
 	double upperArmAngle;
-	nr::conc::thread arm_control_thread;
-	nr::conc::mutex arm_control_mutex;
+	nr::conc::Thread arm_control_thread;
+	nr::conc::Mutex arm_control_mutex;
 	// TODO: Determine this value
 	static const float kCloseEnough = 7.0;
 	static void control_arm_motor ( void* );

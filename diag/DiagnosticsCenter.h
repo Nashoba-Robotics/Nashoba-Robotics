@@ -14,6 +14,8 @@
 #include "../net/socket.h"
 #include "Observable.h"
 
+#define NR_USE_WPILIB
+
 #ifdef NR_USE_WPILIB
 #include "ObservableWPI.h"
 #endif

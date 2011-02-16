@@ -6,7 +6,7 @@
  */
 
 #include "Arm.h"
-#include "diag/diagnostics_center.h"
+#include "diag/DiagnosticsCenter.h"
 #include <math.h>
 
 /**
@@ -55,17 +55,16 @@ void Arm::control_arm_motor( void *object )
  * @brief Constructor for arm class
  */
 Arm::Arm():
-	armMotor( 5 ),
+	armEncoder( 9,10 ),
 	armSolenoidRaise( 7, 2 ),
 	armSolenoidLower( 7, 1 ),
-	armEncoder( 9,10 ),
-	arm_control_thread(new nr::conc::thread::function_entry( Arm::control_arm_motor ) )
-
+	arm_control_thread(new nr::conc::Thread::FunctionEntry( Arm::control_arm_motor ) ),
+	armMotor( 5 )
 {
 	armEncoder.Start();
-	nr::diag::diagnostics_center& diag = nr::diag::diagnostics_center::get_shared_instance();
-	diag.register_device( new nr::diag::observable_speed_controller( armMotor ), "Arm Motor" );
-	diag.register_device( new nr::diag::observable_encoder( armEncoder ), "Arm Encoder" );
+	nr::diag::DiagnosticsCenter& diag = nr::diag::SharedDiagnosticsCenter();
+	diag.RegisterDevice( armMotor, "Arm Motor" );
+	diag.RegisterDevice( armEncoder, "Arm Encoder" );
 }
 /**
  * This function sets the lower arm to a boolean position value:true corresponds to raised and false corresponds to lower
@@ -96,7 +95,7 @@ void Arm::SimpleUpperArm (float value)
 void Arm::SetUpperArm( double angle )
 {
 	// TODO: Constants and real angle factors
-	if ( ! arm_control_mutex.trylock() )
+	if ( ! arm_control_mutex.TryLock() )
 	{
 		arm_control_thread.Stop();
 	}

@@ -12,7 +12,6 @@
 #include "Drive.h"
 #include "LineFollower.h"
 #include "Manipulator.h"
-#include "conc/thread.h"
 
 /**
  *	\brief The robot class
@@ -27,9 +26,7 @@ public:
 	 */
 	Robot( void );
 	
-	Compressor compressor;
-	//Relay relay;
-	/** 	
+	/**
 	 *	\brief The autonomous mode entry
 	 *	When autonomous mode starts, this method is called
 	 */
@@ -42,18 +39,15 @@ public:
 	void OperatorControl( void );
 	
 private:
-	Joystick joy1, joy2;
-	Joystick manipulatorJoystick;
+	Joystick joy1, joy2, manipulatorJoystick;
 	Drive drive;
-	Manipulator manipulator;
-	nr::conc::thread manipulatorThread;
 	
 	LineFollower lineFollower;
-	Ultrasonic ultrasonic;
 	
-	DigitalOutput ultrasonic;
+	Manipulator manipulator;
+	
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;
 };
 
- START_ROBOT_CLASS(Robot);
+START_ROBOT_CLASS(Robot);

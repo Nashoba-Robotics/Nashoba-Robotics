@@ -11,7 +11,7 @@
 #include "WPILib.h"
 #include "conc/thread.h"
 #include "conc/mutex.h"
-#include "diag/observable_wpi.h"
+#include "diag/ObservableWPI.h"
 /**
 * @brief Class that controls the claw and gripper
 */
@@ -53,8 +53,8 @@ public:
 	Servo clawServoBottom2;
 	
 private:
-	nr::conc::thread claw_control_thread;
-	nr::conc::mutex claw_control_mutex;
+	nr::conc::Thread claw_control_thread;
+	nr::conc::Mutex claw_control_mutex;
 	static void claw_servo_stop( void* );
 	float time;
 };

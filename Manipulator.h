@@ -15,7 +15,7 @@
 #include "Claw.h"
 #include "Arm.h"
 
-class Manipulator : public nr::conc::thread::entry
+class Manipulator : public nr::conc::Thread::Entry
 {
 public:
 	/**
