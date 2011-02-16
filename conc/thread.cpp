@@ -53,12 +53,12 @@ void thread::Sleep( unsigned int secs ) throw ()
 	struct timespec sleep_time, remaining_time;
 	sleep_time.tv_sec = secs;
 	
-	nanosleep( &sleep_time, &remaining_time );	
+	nanosleep( &sleep_time, &remaining_time );
 }
 
 void thread::Stop( int signal )
 {
-	pthread_kill( raw_thread, signal ); 
+	pthread_kill( raw_thread, signal );
 }
 
 void thread::Exit( void *retval ) throw ()
@@ -75,7 +75,7 @@ void* thread::entry_function( void *d )
 
 	delete data;
 
-	en->run( args );
+	en->Run( args );
 
 	return NULL;
 }

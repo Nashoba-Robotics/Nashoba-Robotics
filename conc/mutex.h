@@ -9,6 +9,7 @@
 #pragma once
 
 #include "thread_exception.h"
+#include <pthread.h>
 
 #define SYNCHRONIZED(MUTEX) class nr::conc::mutex::lock MUTEX##_macro_lock = MUTEX;\
 	for ( ; (MUTEX##_macro_lock) ;\
@@ -18,8 +19,7 @@ namespace nr {
 	namespace conc
 	{
 		/**
-		 *  A class representing a mutex. This is an abstraction over a
-		 *  pthread_mutex
+		 *  @brief A class representing a mutex. This is an abstraction over a pthread_mutex
 		 */
 		class mutex
 		{
@@ -35,7 +35,7 @@ namespace nr {
 			~mutex() throw ();
 
 			/**
-			 *  A lock on a mutex, in an RAII-compatible fashion
+			 *  @brief A lock on a mutex, in an RAII-compatible fashion
 			 */
 			class lock
 			{

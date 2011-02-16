@@ -15,13 +15,13 @@ namespace nr {
 	namespace conc
 	{
 		/**
-		 *	A class describing a thread
+		 *	@brief A class describing a thread
 		 */
 		class thread
 		{
 		public:
 			/**
-			 *	A functor class describing an entry point for a thread
+			 *	@brief A functor class describing an entry point for a thread
 			 */
 			class entry
 			{
@@ -38,7 +38,7 @@ namespace nr {
 			};
 
 			/**
-			 *	A specific thread entry point describing a function entry
+			 *	@brief A specific thread entry point describing a function entry
 			 */
 			class function_entry : public entry
 			{
