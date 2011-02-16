@@ -23,15 +23,17 @@ public:
 	 * @param joy The joystick to dedicate to the manipulator
 	 */
 	Manipulator( Joystick &joy );
+	virtual ~Manipulator();
 
 	/**
 	 * The thread entry function
 	 */
 	void Run( void* ) throw ();
 
-private:
 	Claw claw;
 	Arm arm;
+
+private:
 	Joystick &joystick;
 
 	void GoDown();

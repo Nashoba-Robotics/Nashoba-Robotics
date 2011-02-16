@@ -7,6 +7,7 @@
  */
 
 #include "Robot.h"
+#include "Arm.h"
  
 Robot :: Robot( void )
 :	joy1( 1 ), joy2( 2 ),
@@ -27,7 +28,22 @@ void Robot :: Autonomous( void )
 	{
 		if ( pastY && lineFollower.sensor1.Get() && lineFollower.sensor2.Get() && lineFollower.sensor3.Get() )
 		{
+			drive.TankDrive( 0.3, 0.3 );
+			Wait( 1.0 );
 			drive.TankDrive( 0.0, 0.0 );
+			
+			// Raise the claw
+			manipulator.arm.SetLowerArm( true );
+			manipulator.arm.SetUpperArm( Arm::kTopSideRung );
+			
+			// Drive forwards slightly
+			drive.TankDrive( -0.3, -0.3 );
+			Wait( 0.4 );
+			drive.TankDrive( 0.0, 0.0 );
+			
+			// Spit out the tube
+			manipulator.claw.Release();
+			
 			return;
 		}
 		else if ( lineFollower.sensor2.Get() )
