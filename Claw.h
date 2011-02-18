@@ -57,6 +57,7 @@ private:
 	nr::conc::Mutex claw_control_mutex;
 	static void claw_servo_stop( void* );
 	float time;
+	bool clawControlRunning;
 };
 
 #endif /* CLAW_H_ */

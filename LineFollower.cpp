@@ -74,4 +74,8 @@ void LineFollower :: WaitUntilFacing( FieldSide side )
 
 void LineFollower :: InitializeDiagnostics()
 {
+	nr::diag::DiagnosticsCenter &diag = nr::diag::SharedDiagnosticsCenter();
+	diag.RegisterDevice( new nr::diag::ObservableDigitalInput( sensor1 ), "Left Sensor" );
+	diag.RegisterDevice( new nr::diag::ObservableDigitalInput( sensor2 ), "Center Sensor" );
+	diag.RegisterDevice( new nr::diag::ObservableDigitalInput( sensor3 ), "Right Sensor" );
 }

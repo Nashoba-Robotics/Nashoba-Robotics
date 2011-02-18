@@ -16,7 +16,7 @@ clawServoBottom1( 5 ),
 clawServoBottom2( 6 ),
 claw_control_thread(new nr::conc::Thread::FunctionEntry( Claw::claw_servo_stop ) )
 {
-	
+	clawControlRunning = false;
 };
 
 void Claw::claw_servo_stop( void *object)
@@ -29,6 +29,8 @@ void Claw::claw_servo_stop( void *object)
 	instance->clawServoTop3.SetRaw( 0 );
 	instance->clawServoBottom1.SetRaw( 0 );
 	instance->clawServoBottom2.SetRaw( 0 );
+	
+	instance->clawControlRunning = false;
 }
 
 
@@ -41,7 +43,7 @@ void Claw::claw_servo_stop( void *object)
 void Claw::Grab()
 {
 
-	if ( ! claw_control_mutex.TryLock() )
+	if ( clawControlRunning )
 	{
 		claw_control_thread.Stop();
 	}
@@ -57,11 +59,12 @@ void Claw::Grab()
 //TODO: REAL VALUES
 void Claw::Release()
 {
-	if ( ! claw_control_mutex.TryLock() )
+	if ( clawControlRunning )
 	{
 		claw_control_thread.Stop();
 	}
 	claw_control_thread.Start( (void *) this );
+	clawControlRunning = true;
 	clawServoTop4.SetRaw( 255 );
 	clawServoTop3.SetRaw( 1 );
 	clawServoBottom1.SetRaw( 1 );
@@ -71,7 +74,7 @@ void Claw::Release()
 
 void Claw::RotateUp()
 {
-		if ( ! claw_control_mutex.TryLock() )
+		if ( clawControlRunning )
 		{
 			claw_control_thread.Stop();
 		}
@@ -86,7 +89,7 @@ void Claw::RotateUp()
 
 void Claw::RotateDown()
 {
-		if ( ! claw_control_mutex.TryLock() )
+		if ( clawControlRunning )
 		{
 			claw_control_thread.Stop();
 		}
@@ -95,7 +98,6 @@ void Claw::RotateDown()
 		clawServoTop3.SetRaw( 1 );
 		clawServoBottom1.SetRaw( 255 );
 		clawServoBottom2.SetRaw( 1 );
-		time=0.2;
-
+		time = 0.2;
 }
 

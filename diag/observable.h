@@ -30,7 +30,7 @@ namespace nr
 			Observable( const std::string &ident = "Device" )
 				: identifier( ident ) {}
 			
-			virtual ~Observable();
+			virtual ~Observable() {}
 		
 			/**
 			 *	Get a string representing the current value of the device

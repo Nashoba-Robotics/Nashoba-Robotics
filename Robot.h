@@ -45,6 +45,9 @@ private:
 	LineFollower lineFollower;
 	
 	Manipulator manipulator;
+	Compressor compressor;
+	
+	Ultrasonic ultrasonic;
 	
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;

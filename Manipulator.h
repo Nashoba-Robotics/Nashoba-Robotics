@@ -23,7 +23,7 @@ public:
 	 * @param joy The joystick to dedicate to the manipulator
 	 */
 	Manipulator( Joystick &joy );
-	virtual ~Manipulator();
+	virtual ~Manipulator() {}
 
 	/**
 	 * The thread entry function
