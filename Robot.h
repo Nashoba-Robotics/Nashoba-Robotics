@@ -38,6 +38,11 @@ public:
 	 */
 	void OperatorControl( void );
 	
+	/**
+	 *	@brief Align the robot with the pole using the IR Range Finder
+	 */
+	void AlignWithPole( void );
+	
 private:
 	Joystick joy1, joy2, manipulatorJoystick;
 	Drive drive;
@@ -48,7 +53,10 @@ private:
 	Compressor compressor;
 	
 	Ultrasonic ultrasonic;
+	Gyro gyro;
 	
+	AnalogChannel leftRangeFinder, centerRangeFinder, rightRangeFinder;
+	DigitalOutput cameraLight;
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;
 };

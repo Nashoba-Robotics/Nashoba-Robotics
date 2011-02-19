@@ -65,4 +65,30 @@ const std::string ObservableJaguarCurrent::Value() throw ()
 	return std::string( out );
 }
 
+ObservableAnalogChannel::ObservableAnalogChannel( AnalogChannel &j ) throw ()
+:	device( j )
+{
+}
+
+const std::string ObservableAnalogChannel::Value() throw ()
+{
+	char out[10];
+	::snprintf( out, sizeof out, "%2f", device.GetVoltage() );
+	
+	return std::string( out );
+}
+
+ObservableGyroscope::ObservableGyroscope( Gyro &g ) throw ()
+:	device( g )
+{
+}
+
+const std::string ObservableGyroscope::Value() throw ()
+{
+	char out[10];
+	::snprintf( out, sizeof out, "%2f", device.GetAngle() );
+	
+	return std::string( out );
+}
+
 #endif

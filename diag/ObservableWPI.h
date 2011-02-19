@@ -63,5 +63,29 @@ namespace nr {
 		private:
 			CANJaguar &device;
 		};
+		
+		class ObservableAnalogChannel : public Observable
+		{
+		public:
+			ObservableAnalogChannel( AnalogChannel &channel ) throw ();
+			
+			const std::string Value() throw ();
+			bool Setable() const throw () { return false; }
+			
+		private:
+			AnalogChannel &device;
+		};
+		
+		class ObservableGyroscope : public Observable
+		{
+		public:
+			ObservableGyroscope( Gyro &g ) throw ();
+			
+			const std::string Value() throw ();
+			bool Setable() const throw () { return false; }
+			
+		private:
+			Gyro &device;
+		};
 	}
 }

@@ -69,7 +69,7 @@ void Claw::Release()
 	clawServoTop3.SetRaw( 1 );
 	clawServoBottom1.SetRaw( 1 );
 	clawServoBottom2.SetRaw( 255 );
-	time=2.0;
+	time = 2.0;
 }
 
 void Claw::RotateUp()
@@ -84,7 +84,7 @@ void Claw::RotateUp()
 		
 		clawServoBottom1.SetRaw( 1 );
 		clawServoBottom2.SetRaw( 255 );
-		time=0.2;
+		time = 0.5;
 }
 
 void Claw::RotateDown()
@@ -98,6 +98,6 @@ void Claw::RotateDown()
 		clawServoTop3.SetRaw( 1 );
 		clawServoBottom1.SetRaw( 255 );
 		clawServoBottom2.SetRaw( 1 );
-		time = 0.2;
+		time = 0.5;
 }
 
