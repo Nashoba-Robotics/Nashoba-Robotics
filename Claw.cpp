@@ -48,6 +48,7 @@ void Claw::Grab()
 		claw_control_thread.Stop();
 	}
 	claw_control_thread.Start( (void *) this );
+	clawControlRunning = true;
 	clawServoTop4.SetRaw( 1 );
 	clawServoTop3.SetRaw( 255 );
 	clawServoBottom1.SetRaw( 255 );
@@ -79,6 +80,7 @@ void Claw::RotateUp()
 			claw_control_thread.Stop();
 		}
 		claw_control_thread.Start( (void *) this );
+		clawControlRunning = true;
 		clawServoTop4.SetRaw( 1 );
 		clawServoTop3.SetRaw( 255 );
 		
@@ -94,6 +96,7 @@ void Claw::RotateDown()
 			claw_control_thread.Stop();
 		}
 		claw_control_thread.Start( (void *) this );
+		clawControlRunning = true;
 		clawServoTop4.SetRaw( 255 );
 		clawServoTop3.SetRaw( 1 );
 		clawServoBottom1.SetRaw( 255 );

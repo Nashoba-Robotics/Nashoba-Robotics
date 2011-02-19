@@ -53,9 +53,9 @@ private:
 	Compressor compressor;
 	
 	Ultrasonic ultrasonic;
-	Gyro gyro;
 	
 	AnalogChannel leftRangeFinder, centerRangeFinder, rightRangeFinder;
+	Gyro gyro;
 	DigitalOutput cameraLight;
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;

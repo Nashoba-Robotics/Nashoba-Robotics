@@ -100,6 +100,11 @@ void Drive :: InitializeDiagnostics()
 	diag.RegisterDevice( leftMotors.rear,   "Left Rear Motor" );
 	diag.RegisterDevice( rightMotors.front, "Right Front Motor" );
 	diag.RegisterDevice( rightMotors.rear,  "Right Rear Motor" );
+
+	diag.RegisterDevice( new nr::diag::ObservableJaguarCurrent( leftMotors.front ),  "Left Front Motor - Current" );
+	diag.RegisterDevice( new nr::diag::ObservableJaguarCurrent( leftMotors.rear ),   "Left Rear Motor - Current" );
+	diag.RegisterDevice( new nr::diag::ObservableJaguarCurrent( rightMotors.front ), "Right Front Motor - Current" );
+	diag.RegisterDevice( new nr::diag::ObservableJaguarCurrent( rightMotors.rear ),  "Right Rear Motor - Current" );
 	
 	diag.RegisterDevice( leftMotors.encoder,  "Left Encoder" );
 	diag.RegisterDevice( rightMotors.encoder, "Right Encoder" );

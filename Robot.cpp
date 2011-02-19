@@ -55,7 +55,8 @@ void Robot :: Autonomous( void )
 		
 		if ( pastY && lineFollower.sensor1.Get() && lineFollower.sensor2.Get() && lineFollower.sensor3.Get() )
 		{
-			drive.TankDrive( 0.3, 0.3 );
+			// Drive back a little
+			drive.TankDrive( 0.35, 0.35 );
 			Wait( 2.2 );
 			drive.TankDrive( 0.0, 0.0 );
 			
@@ -63,17 +64,18 @@ void Robot :: Autonomous( void )
 			manipulator.arm.SetUpperArm( Arm::kTopMiddleRung );
 			Wait(0.2);
 			manipulator.arm.SetLowerArm( true );
-			
-			
+
+			manipulator.claw.RotateDown();
 			// Drive forwards slightly
 			drive.TankDrive( -0.3, -0.3 );
 			Wait( 0.4 );
 			drive.TankDrive( 0.0, 0.0 );
 
-			Wait( 6.5 );
-			// Spit out the tube
+			Wait( 3.0 );
 			manipulator.claw.RotateDown();
-			Wait(0.3f);
+			Wait( 1.5 );
+			manipulator.claw.RotateDown();
+			Wait( 1.0 );
 			manipulator.claw.Release();
 			
 			return;
@@ -114,34 +116,6 @@ void Robot :: OperatorControl( void )
 
 void Robot :: AlignWithPole( void )
 {
-	/*
-	const INT16 kPeakSlopeThreshold = 10;
-	
-	drive.TankDrive( 0.4, 0.0 );
-	
-	INT16 peak = 0;
-	INT16 value;
-	
-	INT16 lastValue = 0;
-	bool pastPeak = false;
-	
-	while ( true )
-	{
-		value = centerRangeFinder.GetVoltage();
-		if ( value > 0.2 )
-			drive.TankDrive( 0.4, 0.4 );
-		else
-			drive.TankDrive( 0.4, 0.0 );
-		
-		if ( value > 0.9 )
-			break;
-		
-		Wait( 0.05 );
-	}
-	
-	drive.TankDrive( 0, 0 );
-	*/
-	
 	while ( true )
 	{
 		if ( centerRangeFinder.GetVoltage() > 0.15 )
