@@ -22,7 +22,7 @@ static DiagnosticsCenter *shared_diagnostics_center = NULL;
 static const char* headers = "charset=ASCII\r\nServer: NRWeb/1.0\r\n";
 static const char* web_file_name = "diag/web/index.html";
 
-DiagnosticsCenter& SharedDiagnosticsCenter()
+DiagnosticsCenter& nr::diag::SharedDiagnosticsCenter()
 {
 	return DiagnosticsCenter::GetSharedInstance();
 }
