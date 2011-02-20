@@ -87,5 +87,17 @@ namespace nr {
 		private:
 			Gyro &device;
 		};
+		
+		class ObservableUltrasonic : public Observable
+		{
+		public:
+			ObservableUltrasonic( Ultrasonic &u ) throw ();
+			
+			const std::string Value() throw ();
+			bool Setable() const throw () { return false; }
+			
+		private:
+			Ultrasonic &device;
+		};
 	}
 }

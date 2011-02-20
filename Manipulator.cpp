@@ -62,7 +62,7 @@ void Manipulator::Run( void* ) throw ()
 			if ( joystick.GetRawButton( 11 ) )
 			{
 				arm.SetLowerArm( false );
-				Wait( 0.75 );
+				Wait( 1.5 );
 				arm.SetUpperArm( -50 );
 			}
 			

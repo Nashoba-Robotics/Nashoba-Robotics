@@ -57,6 +57,9 @@ private:
 	AnalogChannel leftRangeFinder, centerRangeFinder, rightRangeFinder;
 	Gyro gyro;
 	DigitalOutput cameraLight;
+	
+	Solenoid deploymentSolenoid1;
+	Solenoid deploymentSolenoid2;
 	// Constants
 	static const float kMainRunLoopDelta = 0.05;
 };

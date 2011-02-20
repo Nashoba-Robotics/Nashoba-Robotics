@@ -23,7 +23,9 @@ Robot :: Robot( void )
 	centerRangeFinder( 1, 3 ),
 	rightRangeFinder( 1, 4 ),
 	gyro( 1, 1 ),
-	cameraLight( 8 )
+	cameraLight( 8 ),
+	deploymentSolenoid1( 7, 3 ),
+	deploymentSolenoid2( 7, 4 )
 {
 	cameraLight.Set( false );
 	compressor.Start();
@@ -35,13 +37,17 @@ Robot :: Robot( void )
 	nr::diag::SharedDiagnosticsCenter().RegisterDevice( new nr::diag::ObservableAnalogChannel( leftRangeFinder ), "Left IR Range Finder" );
 	nr::diag::SharedDiagnosticsCenter().RegisterDevice( new nr::diag::ObservableAnalogChannel( centerRangeFinder ), "Center IR Range Finder" );
 	nr::diag::SharedDiagnosticsCenter().RegisterDevice( new nr::diag::ObservableAnalogChannel( rightRangeFinder ), "Right IR Range Finder" );
-	
+
 	nr::diag::SharedDiagnosticsCenter().RegisterDevice( new nr::diag::ObservableGyroscope( gyro ), "Gyroscope" );
+	nr::diag::SharedDiagnosticsCenter().RegisterDevice( new nr::diag::ObservableUltrasonic( ultrasonic ), "Ultrasonic" );
 }
 
 void Robot :: Autonomous( void )
 {
 	GetWatchdog().SetEnabled( false );
+	
+	deploymentSolenoid1.Set( true );
+	deploymentSolenoid2.Set( false );
 	
 	bool pastY = true;
 	double speed = 1.0;
@@ -56,7 +62,7 @@ void Robot :: Autonomous( void )
 		if ( pastY && lineFollower.sensor1.Get() && lineFollower.sensor2.Get() && lineFollower.sensor3.Get() )
 		{
 			// Drive back a little
-			drive.TankDrive( 0.35, 0.35 );
+			drive.TankDrive( 0.30, 0.30 );
 			Wait( 2.2 );
 			drive.TankDrive( 0.0, 0.0 );
 			
@@ -109,6 +115,15 @@ void Robot :: OperatorControl( void )
 		{
 			AlignWithPole();
 			return;
+			Wait( 3.0 );
+			deploymentSolenoid1.Set(false);
+			deploymentSolenoid2.Set(true);
+		}
+		
+		if ( joy1.GetRawButton( 3 ) )
+		{
+			deploymentSolenoid1.Set(false);
+			deploymentSolenoid2.Set(true);
 		}
 		Wait( kMainRunLoopDelta );
 	}

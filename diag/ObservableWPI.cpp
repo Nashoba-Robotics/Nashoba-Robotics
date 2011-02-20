@@ -91,4 +91,17 @@ const std::string ObservableGyroscope::Value() throw ()
 	return std::string( out );
 }
 
+ObservableUltrasonic::ObservableUltrasonic( Ultrasonic &g ) throw ()
+:	device( g )
+{
+}
+
+const std::string ObservableUltrasonic::Value() throw ()
+{
+	char out[10];
+	::snprintf( out, sizeof out, "%2f", device.GetRangeInches() );
+	
+	return std::string( out );
+}
+
 #endif
