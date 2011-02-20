@@ -32,6 +32,8 @@ Robot :: Robot( void )
 	nr::conc::Thread th( &manipulator );
 	th.Start();
 	
+	Ultrasonic::SetAutomaticMode( true );
+	
 	gyro.Reset();
 	
 	nr::diag::SharedDiagnosticsCenter().RegisterDevice( new nr::diag::ObservableAnalogChannel( leftRangeFinder ), "Left IR Range Finder" );
@@ -52,18 +54,31 @@ void Robot :: Autonomous( void )
 	bool pastY = true;
 	double speed = 1.0;
 	
+	// Drive initially
+	drive.TankDrive( -1.0, -1.0 );
+	
 	while ( IsAutonomous() )
 	{
-		if ( ultrasonic.GetRangeInches() < 60.0 )
-			speed = 0.6;
+		double range = ultrasonic.GetRangeInches();
+		if ( range < 80.0 && range != 0 )
+			speed = 0.5;
 		else
 			speed = 1.0;
 		
-		if ( pastY && lineFollower.sensor1.Get() && lineFollower.sensor2.Get() && lineFollower.sensor3.Get() )
+		if ( (pastY && lineFollower.sensor1.Get() && lineFollower.sensor2.Get() && lineFollower.sensor3.Get()) || (range < 70.0 && range != 0.0 && range < 1000.0) )
 		{
 			// Drive back a little
-			drive.TankDrive( 0.30, 0.30 );
-			Wait( 2.2 );
+			
+			int t = 0;
+			range = ultrasonic.GetRangeInches();
+			while ( range < 48.0 && range < 1000.0 && range > 0.0 && t < 80 )
+			{
+				drive.TankDrive( 0.5, 0.5 );
+				t++;
+				Wait( 0.05 );
+				range = ultrasonic.GetRangeInches();
+			}
+			
 			drive.TankDrive( 0.0, 0.0 );
 			
 			// Raise the claw
@@ -106,6 +121,9 @@ void Robot :: Autonomous( void )
 void Robot :: OperatorControl( void )
 {
 	GetWatchdog().SetEnabled( false );
+
+	deploymentSolenoid1.Set( true );
+	deploymentSolenoid2.Set( false );
 	
 	while ( IsOperatorControl() )
 	{
@@ -114,7 +132,6 @@ void Robot :: OperatorControl( void )
 		if ( joy1.GetRawButton( 11 ) )
 		{
 			AlignWithPole();
-			return;
 			Wait( 3.0 );
 			deploymentSolenoid1.Set(false);
 			deploymentSolenoid2.Set(true);

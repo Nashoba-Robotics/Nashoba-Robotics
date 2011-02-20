@@ -2,17 +2,19 @@
 <!DOCTYPE html>
 <html xmlns = "http://www.w3.org/1999/xhtml" xml:lang = "en" lang = "en">
 	<head>
-		<title>Test Page</title>
+		<title>Diagnostics</title>
+		<meta name = "viewport" content = "width=320" />
 		<style>
 			/*
 			 *	style.css
 			 */
-
+			 
 			body
 			{
 				font-family: DejaVu Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
 				-webkit-user-select: none;
 				cursor: default;
+				margin: 0px;
 			}
 
 			header
@@ -23,6 +25,7 @@
 				border-top: #0a0 3px solid;
 				border-bottom: #eee 1px solid;
 				padding: 15px;
+				margin: 5px;
 			}
 
 			header h1, header h2
@@ -36,7 +39,7 @@
 			header h2
 			{
 				border-left: #aaa 1px solid;
-				padding-left: 10px;
+				padding-left: 5px;
 				margin-left: 5px;
 			}
 
@@ -45,6 +48,7 @@
 				color: gray;
 				display: block;
 				padding: 5px;
+				margin: 5px;
 			}
 
 			nav a.menuitem
@@ -96,6 +100,69 @@
 			.device .display
 			{
 				font-size: 225%;
+			}
+			
+			@media only screen and (max-device-width: 480px) {
+				body
+				{
+					background: #777;
+				}
+			
+				header
+				{
+					margin: 0px;
+					color: white;
+					background: -webkit-gradient( linear, left top, left bottom, from( #555 ), to( #333 ), color-stop( 50%, #444 ), color-stop( 50%, #3b3b3b ) );
+					border-top: #777 1px solid;
+					font-size: 120%;
+					text-shadow: 0px 1px 0px black;
+					margin-bottom: 0px;
+					border-bottom: black 1px solid;
+					padding: 10px 10px;
+					font-weight: bold;
+				}
+				
+				header h1
+				{
+					font-weight: bold;
+				}
+				
+				header h2
+				{
+					display: none;
+				}
+			
+				.device .type {
+					display: none;
+				}
+				
+				.device {
+					background: -webkit-gradient( linear, left top, left bottom, from( #f7f7f7 ), to( #eee ) );
+					border: transparent 0px none;
+					border-top: white 1px solid;
+					border-bottom: #aaa 1px solid;
+					margin: 0px;
+					height: 2em;
+				}
+				
+				.device .title
+				{
+					float: left;
+					display: block;
+					font-size: 100%;
+				}
+				
+				.device .display
+				{
+					float: right;
+					display: block;
+					font-size: 175%;
+				}
+				
+				nav
+				{
+					display: none;
+				}
 			}
 		</style>
 		<script lang = "javascript" type = "text/javascript">
