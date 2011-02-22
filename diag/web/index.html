@@ -66,13 +66,13 @@
 
 			#device-container
 			{
-				margin-top: 10px;
+				margin: 10px;
 			}
 
 			.device
 			{
-				float: left;
 				width: 300px;
+				float: left;
 				border: #eee solid 1px;
 				padding: 10px;
 				margin-right: 5px;
@@ -88,6 +88,7 @@
 
 			.device .title
 			{
+				display: block;
 				font-size: 125%;
 				margin-bottom: 5px;
 			}
@@ -107,7 +108,13 @@
 				{
 					background: #777;
 				}
-			
+				
+				#device-container
+				{
+					margin: 0px;
+					padding: 0px;
+				}
+				
 				header
 				{
 					margin: 0px;
@@ -125,11 +132,13 @@
 				header h1
 				{
 					font-weight: bold;
+					margin: 0px;
 				}
 				
 				header h2
 				{
 					display: none;
+					margin: 0px;
 				}
 			
 				.device .type {
@@ -141,12 +150,18 @@
 					border: transparent 0px none;
 					border-top: white 1px solid;
 					border-bottom: #aaa 1px solid;
-					margin: 0px;
-					height: 2em;
+					margin: 0px !important;
+					height: 2.0em;
+					padding: 5px;
+					text-shadow: 0px 1px 0px white;
+					width: 100%;
+					
+					line-height: 2.0em;
 				}
 				
 				.device .title
 				{
+					color: #333;
 					float: left;
 					display: block;
 					font-size: 100%;
@@ -156,7 +171,8 @@
 				{
 					float: right;
 					display: block;
-					font-size: 175%;
+					font-size: 150%;
+					margin: 0px 10px 0px 0px;
 				}
 				
 				nav
@@ -177,6 +193,8 @@
 		}
 
 		var Application = {
+			"csv": "",
+		
 			"init": function()
 			{
 				document.getElementById( 'ip-address' ).innerHTML =
@@ -194,13 +212,14 @@
 					{
 						if ( request.readyState == 4 && request.status == 200 )
 						{
+							Application.csv  += request.responseText + '\n';
 							Application.Update( request.responseText );
 						}
 					}
 					request.send( null );
 				}
 				
-				catch ( e ) { console.log( "Exception caught: " + e ); }
+				catch ( e ) { }
 		
 				setTimeout( Application.runloop, 100 );
 			},
@@ -276,6 +295,12 @@
 					this.element.display.innerHTML = ("" + parseFloat(value) != "NaN") ? parseFloat( value ).toFixed( 2 ) : value;
 				};
 			},
+			
+			"DownloadCSV": function()
+			{
+				var w = window.open( '', '', 'width=500,height=300,resizable=yes,scrollbars=yes,toolbar=no' );
+				w.document.write( "<pre>" + Application.csv + "</pre>" );
+			}
 		}
 
 		Application.Device.createElement = function ( id, type )
@@ -314,9 +339,7 @@
 			<h2>Diagnostics</h2>
 		</header>
 		<nav>
-			<a class = "menuitem" href = "#all">All</a>
-			<a class = "menuitem" href = "#inputs">Inputs</a>
-			<a class = "menuitem" href = "#outputs">Outputs</a>
+			<a class = "menuitem" href = "#" onclick = "Application.DownloadCSV()">Download CSV</a>
 		</nav>
 		
 		<div id = "device-container">

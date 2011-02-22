@@ -60,7 +60,7 @@ public:
 	
 	// Constants
 	static const double kTopMiddleRung		= -1800.0;
-	static const double kTopSideRung		= -1953.0;
+	static const double kTopSideRung		= -1931.25;
 	static const double kCenterMiddleRung	= -2148.0;
 	static const double kCenterSideRung		= -2275.0;
 	static const double kBottomMiddleRung	= -721.0;

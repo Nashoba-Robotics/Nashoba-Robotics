@@ -35,6 +35,7 @@ public:
 
 private:
 	Joystick &joystick;
+	AnalogChannel limitSwitch;
 
 	void GoDown();
 	//TODO: fix angle ratio to correspond to actual geometry

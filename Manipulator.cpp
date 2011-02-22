@@ -9,7 +9,8 @@
 #include "Manipulator.h"
 
 Manipulator::Manipulator( Joystick &joy ):
-	joystick( joy )
+	joystick( joy ),
+	limitSwitch( 1, 5 )
 {
 
 }
@@ -25,10 +26,6 @@ void Manipulator::Run( void* ) throw ()
 	{
 		while ( RobotBase::getInstance().IsOperatorControl() )
 		{
-			
-			if ( joystick.GetRawButton( 8 ) )
-				arm.SimpleUpperArm( joystick.GetY() );
-			
 			if ( joystick.GetRawButton( 2 ) )
 				claw.Grab();
 			
@@ -63,11 +60,23 @@ void Manipulator::Run( void* ) throw ()
 			{
 				arm.SetLowerArm( false );
 				Wait( 1.5 );
-				arm.SetUpperArm( -50 );
+				arm.SetUpperArm( 0 );
 			}
 			
 			if ( joystick.GetRawButton( 9 ) )
 				GoDown();
+			
+			if ( joystick.GetRawButton( 8 ) )
+			{
+				double value = joystick.GetY();
+				if ( value >= 0.0 || (limitSwitch.GetVoltage() < 4.5 && value < 0.0) )
+					arm.SimpleUpperArm( joystick.GetY() );
+				else
+					arm.SimpleUpperArm( 0.0 );
+			}
+			
+			else if ( limitSwitch.GetVoltage() > 4.5 )
+				arm.armMotor.Set( 0.0 );
 			
 			arm.encoderValue = arm.armEncoder.Get();
 			
