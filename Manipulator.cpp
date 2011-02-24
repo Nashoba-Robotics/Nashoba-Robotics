@@ -42,12 +42,16 @@ void Manipulator::Run( void* ) throw ()
 				arm.SetLowerArm( true );
 			
 			if ( joystick.GetRawButton( 6 ) )
-				arm.SetLowerArm( false );
+			{
+				arm.SetLowerArm(false);
+				arm.SetUpperArm( Arm::kBottomSideRung );
+					
+			}
 	
 			if ( joystick.GetRawButton( 10 ) )
 			{
 				arm.SetLowerArm( true );
-				arm.SetUpperArm( Arm::kTopMiddleRung );
+				arm.SetUpperArm( Arm::kTopSideRung );
 			}
 			
 			if ( joystick.GetRawButton( 7 ) )
@@ -59,12 +63,15 @@ void Manipulator::Run( void* ) throw ()
 			if ( joystick.GetRawButton( 11 ) )
 			{
 				arm.SetLowerArm( false );
-				Wait( 1.5 );
+				Wait( 1.2 );
 				arm.SetUpperArm( 0 );
 			}
 			
 			if ( joystick.GetRawButton( 9 ) )
-				GoDown();
+			{
+				arm.SetLowerArm(true);
+				arm.SetUpperArm( Arm::kCenterSideRung );
+			}	
 			
 			if ( joystick.GetRawButton( 8 ) )
 			{

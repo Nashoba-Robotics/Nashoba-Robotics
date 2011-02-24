@@ -23,25 +23,25 @@ void Arm::control_arm_motor( void *object )
 	{
 
 		instance->upperArmAngle = instance->GetTilt();
-		if (((instance->upperArmAngle-instance->arm_control_angle ) / 1000 < 0.2) && ((instance->upperArmAngle-instance->arm_control_angle ) / 2000 > 0) )
+		if (((instance->upperArmAngle-instance->arm_control_angle ) / 700 < 0.5) && ((instance->upperArmAngle-instance->arm_control_angle ) / 2000 > 0) )
 		{
 			instance->armMotor.Set(0.5);
 		}
-		else if (((instance->upperArmAngle-instance->arm_control_angle ) / 1000 > -0.2) && ((instance->upperArmAngle-instance->arm_control_angle ) / 2000 < 0) )
+		else if (((instance->upperArmAngle-instance->arm_control_angle ) / 700 > -0.5) && ((instance->upperArmAngle-instance->arm_control_angle ) / 2000 < 0) )
 		{
-					instance->armMotor.Set(-0.4);
+					instance->armMotor.Set(-0.5);
 		}
-		else if ((instance->upperArmAngle-instance->arm_control_angle ) / 1000 >= 1.0 )
+		else if ((instance->upperArmAngle-instance->arm_control_angle ) / 700 >= 1.0 )
 		{
 			instance->armMotor.Set(1.0);
 		}
-		else if ((instance->upperArmAngle-instance->arm_control_angle ) / 1000 <= -1.0 )
+		else if ((instance->upperArmAngle-instance->arm_control_angle ) / 700 <= -1.0 )
 		{
 			instance->armMotor.Set(-1.0);
 		}
 		else
 		{
-		instance->armMotor.Set( ( instance->upperArmAngle-instance->arm_control_angle ) / 1000 );
+		instance->armMotor.Set( ( instance->upperArmAngle-instance->arm_control_angle ) / 700 );
 		}
 		Wait( 0.05 );		
 

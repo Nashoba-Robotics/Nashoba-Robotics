@@ -60,7 +60,7 @@ void Robot :: Autonomous( void )
 	while ( IsAutonomous() )
 	{
 		double range = ultrasonic.GetRangeInches();
-		if ( range < 80.0 && range != 0 )
+		if ( range < 100.0 && range != 0 )
 			speed = 0.5;
 		else
 			speed = 1.0;
@@ -98,6 +98,13 @@ void Robot :: Autonomous( void )
 			manipulator.claw.RotateDown();
 			Wait( 1.0 );
 			manipulator.claw.Release();
+			
+			Wait( 1.5 );
+			
+			drive.TankDrive( 0.5, 0.5 );
+			
+			Wait( 1.0 );
+			drive.TankDrive( 0.0, 0.0 );
 			
 			return;
 		}
