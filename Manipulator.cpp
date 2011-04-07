@@ -35,45 +35,62 @@ void Manipulator::Run( void* ) throw ()
 			if ( joystick.GetRawButton( 3 ) )
 				claw.RotateUp();
 	
-			if ( joystick.GetRawButton( 4 ) )
-				claw.RotateDown();
-	
 			if ( joystick.GetRawButton( 5 ) )
-				arm.SetLowerArm( true );
-			
-			if ( joystick.GetRawButton( 6 ) )
+				claw.RotateDown();
+		
+			if ( joystick.GetRawButton( 7 ) )
 			{
-				arm.SetLowerArm(false);
-				arm.SetUpperArm( Arm::kBottomSideRung );
+				arm.SetLowerArm(true);
+				arm.SetUpperArm( Arm::kTopMiddleRung );
 					
 			}
-	
+		
+			if ( joystick.GetRawButton( 8 ) )
+			{
+				arm.SetLowerArm(true);
+				arm.SetUpperArm( Arm::kTopSideRung );
+					
+			}
+			
+			if ( joystick.GetRawButton( 9 ) )
+			{
+				arm.SetLowerArm( true );
+				arm.SetUpperArm( Arm::kCenterMiddleRung );
+			}
+			
 			if ( joystick.GetRawButton( 10 ) )
 			{
 				arm.SetLowerArm( true );
-				arm.SetUpperArm( Arm::kTopSideRung );
+				arm.SetUpperArm( Arm::kCenterSideRung );
 			}
 			
-			if ( joystick.GetRawButton( 7 ) )
+			if ( joystick.GetRawButton( 11 ) )
+			{
+				arm.SetLowerArm( false );
+				arm.SetUpperArm( Arm::kBottomMiddleRung );
+			}
+			
+			if ( joystick.GetRawButton( 12 ) )
+			{
+				arm.SetLowerArm( false );
+				arm.SetUpperArm( Arm::kBottomSideRung );
+			}
+			
+			if ( joystick.GetRawButton( 6 ) )
 			{
 				arm.SetLowerArm( false );
 				arm.SetUpperArm( -800 );
 			}
 			
-			if ( joystick.GetRawButton( 11 ) )
+			if ( joystick.GetRawButton( 4 ) )
 			{
 				arm.SetLowerArm( false );
 				Wait( 1.2 );
 				arm.SetUpperArm( 0 );
 			}
 			
-			if ( joystick.GetRawButton( 9 ) )
-			{
-				arm.SetLowerArm(true);
-				arm.SetUpperArm( Arm::kCenterSideRung );
-			}	
 			
-			if ( joystick.GetRawButton( 8 ) )
+			if ( joystick.GetThrottle()<0.9 )
 			{
 				double value = joystick.GetY();
 				if ( value >= 0.0 || (limitSwitch.GetVoltage() < 4.5 && value < 0.0) )
